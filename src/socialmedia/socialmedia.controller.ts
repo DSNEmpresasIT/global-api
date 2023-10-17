@@ -15,4 +15,19 @@ export class SocialmediaController {
     const postId = param.postId;
     return this.service.getFacebookPostDetail(postId);
   }
+
+  @Get('/instagram')
+  async getInstagran() {
+    return this.service.getInstagramPhotos();
+  }
+
+  @Get('/instagram/lastReel')
+  async getLastInstagramReel() {
+    return this.service.getLastInstagramReel();
+  }
+
+  @Get('/instagram/videos')
+  async getInstagramVideos() {
+    return this.service.getInstagramVideos();
+  }
 }
