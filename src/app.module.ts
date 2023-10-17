@@ -6,9 +6,11 @@ import { SocialmediaService } from './socialmedia/socialmedia.service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    isGlobal: true
-  })],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController, SocialmediaController],
   providers: [AppService, SocialmediaService],
 })

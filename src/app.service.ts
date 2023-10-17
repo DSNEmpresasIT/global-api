@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   healthcheckservice() {
     return {
-      serverStatus: 'Ok'
+      serverStatus: 'Ok',
     };
   }
 }
