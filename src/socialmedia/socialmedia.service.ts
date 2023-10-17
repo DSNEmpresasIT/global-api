@@ -4,8 +4,11 @@ import axios from 'axios';
 @Injectable()
 export class SocialmediaService {
   private readonly FACEBOOK_BASE_URL: string = 'https://graph.facebook.com';
+  private readonly INSTAGRAM_BASE_URL: string =
+    'https://graph.instagram.com/me/media?fields=id,media_type,media_url,thumbnail_url,permalink&access_token=';
   private readonly FACEBOOK_LONG_TOKEN: string = process.env.FACEBOOK_TOKEN;
   private readonly FACEBOOK_PAGE_ID: string = process.env.FACEBOOK_PAGE_ID;
+  private readonly INSTAGRAM_TOKEN: string = process.env.INSTAGRAM_TOKEN;
 
   private async getFacebookShortToken() {
     const data = await axios.get(
@@ -42,6 +45,54 @@ export class SocialmediaService {
     } catch (error) {
       throw new BadRequestException(
         'getFacebookPostDetail error: ',
+        error.message,
+      );
+    }
+  }
+
+  async getInstagramPhotos() {
+    try {
+      const dataFetch = await fetch(
+        this.INSTAGRAM_BASE_URL + this.INSTAGRAM_TOKEN,
+      );
+      const { data } = await dataFetch.json();
+
+      return data.filter((post: any) => post.media_type === 'IMAGE');
+    } catch (error) {
+      throw new BadRequestException(
+        'getInstagramPhotos error: ',
+        error.message,
+      );
+    }
+  }
+
+  async getLastInstagramReel() {
+    try {
+      const dataFetch = await fetch(
+        this.INSTAGRAM_BASE_URL + this.INSTAGRAM_TOKEN,
+      );
+      const data = (await dataFetch.json()).data;
+
+      return data.filter((post: any) => post.media_type === 'VIDEO')[0];
+    } catch (error) {
+      throw new BadRequestException(
+        'getLastInstagramReel error: ',
+        error.message,
+      );
+    }
+  }
+
+  async getInstagramVideos() {
+    try {
+      const dataFetch = await fetch(
+        this.INSTAGRAM_BASE_URL + this.INSTAGRAM_TOKEN,
+      );
+      const data = (await dataFetch.json()).data;
+
+      return data.filter((post: any) => post.media_type === 'VIDEO');
+    } catch (error) {
+      throw new BadRequestException(
+        'getInstagramVideos error: ',
         error.message,
       );
     }
