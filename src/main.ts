@@ -7,8 +7,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: [
-      'http://localhost', 
-      'https://estudiojauregui.com.ar'
+      'http://localhost:4321', 
+      'http://estudiojuridicojauregui.com.ar/'
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true
