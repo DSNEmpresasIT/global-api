@@ -9,7 +9,7 @@ export class MailerController {
   private readonly service: MailerService = new MailerService();
   constructor (private readonly jwtService: JwtService) {}
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Post('send-email')
   async sendEmail(@Body() body: SendEmailDto) {
     return await this.service.sendEmail(body);
