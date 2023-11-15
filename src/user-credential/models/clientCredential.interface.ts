@@ -1,5 +1,5 @@
 export interface ClientCredential {
-  clientId: string;
+  clientName: string;
   supabaseUrl?: string;
   supabaseKey?: string;
   facebook?: {
@@ -7,10 +7,7 @@ export interface ClientCredential {
     pageId: string;
   };
   instagram?: string;
-  recapchap?: {
-    key: string;
-    secretKey: string;
-  };
+  recapcha?: ReCaptchaKeys;
   email?: {
     host: string;
     user: string;
@@ -23,3 +20,8 @@ export interface ClientCredential {
     };
   };
 }
+
+export interface ReCaptchaKeys {
+  key: string;
+  secretKey: string;
+} 

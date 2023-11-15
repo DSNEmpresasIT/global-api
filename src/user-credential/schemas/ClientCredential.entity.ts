@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 @Schema()
 export class ClientCredential extends Document {
   @Prop({ required: true })
-  clientId: string;
+  clientName: string;
 
   @Prop({ required: false })
   supabaseUrl: string;

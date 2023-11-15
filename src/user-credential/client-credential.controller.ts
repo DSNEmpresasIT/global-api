@@ -1,6 +1,6 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { ClientCredentialService } from './client-credential.service';
-import { ClientCredential } from './schemas/ClientCredential.entity';
+import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
 
 @Controller('user-credential')
 export class ClientCredentialController {
@@ -9,7 +9,7 @@ export class ClientCredentialController {
   @Post('/create')
   async createUserCred(
     @Res() res,
-    @Body() createClientCredential: ClientCredential,
+    @Body() createClientCredential: ClientCredentialDto,
   ) {
     const userCred =
       await this.userCredService.createClientCredential(createClientCredential);

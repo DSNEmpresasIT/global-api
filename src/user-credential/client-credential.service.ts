@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ClientCredential } from './schemas/ClientCredential.entity'
+import { ClientCredential } from './schemas/ClientCredential.entity';
+import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
+
 
 @Injectable()
 export class ClientCredentialService {
@@ -20,7 +22,7 @@ export class ClientCredentialService {
   }
 
   async createClientCredential(
-    ClientCredential: ClientCredential,
+    ClientCredential: ClientCredentialDto,
   ): Promise<ClientCredential> {
     const clientCred = new this.ClientCredentialModel(ClientCredential);
     return await clientCred.save();

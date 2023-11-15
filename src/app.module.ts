@@ -25,13 +25,13 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
     MongooseModule.forRoot(
       process.env.MONGODB_DEVELOPMENT
     ),
-    ClientCredentialModule,
+    ClientCredentialModule
   ],
   controllers: [AppController, SocialmediaController, MailerController],
   providers: [
     AppService, 
     SocialmediaService, 
-    MailerService, 
+    MailerService,
     JwtStrategy
   ],
 })
