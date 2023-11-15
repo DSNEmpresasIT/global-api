@@ -5,10 +5,10 @@ export class UserCredential extends Document {
   @Prop({ required: true })
   clientId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   supabaseUrl: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   supabaseKey: string;
 
   @Prop({ required: false })
