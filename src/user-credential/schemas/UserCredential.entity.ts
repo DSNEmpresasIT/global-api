@@ -11,7 +11,7 @@ export class UserCredential extends Document {
   @Prop({ required: false })
   supabaseKey: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Object })
   facebook: {
     tokenId: string;
     pageId: string;
@@ -20,13 +20,13 @@ export class UserCredential extends Document {
   @Prop({ required: false })
   instagram: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Object })
   recapchap: {
     key: string;
     secretKey: string;
   };
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Object })
   email: {
     host: string;
     user: string;
