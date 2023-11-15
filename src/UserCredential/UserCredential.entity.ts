@@ -3,39 +3,39 @@ import { Document } from 'mongoose';
 @Schema()
 export class UserCredential extends Document {
   @Prop({ required: true })
-  USER_ID: string;
+  clientId: string;
 
   @Prop({ required: true })
-  SUPABASE_URL: string;
+  supabaseUrl: string;
 
   @Prop({ required: true })
-  SUPABASE_KEY: string;
+  supabaseKey: string;
 
   @Prop({ required: false })
-  FACEBOOK: {
-    TOKEN_ID: string;
-    PAGE_ID: string;
+  facebook: {
+    tokenId: string;
+    pageId: string;
   };
 
   @Prop({ required: false })
-  INSTAGRAM: string;
+  instagram: string;
 
   @Prop({ required: false })
-  RECAPCHAP: {
-    KEY: string;
-    SECRET_KEY: string;
+  recapchap: {
+    key: string;
+    secretKey: string;
   };
 
   @Prop({ required: false })
-  EMAIL: {
-    HOST: string;
-    USER: string;
-    PASSWORD: string;
-    PORT: string;
-    EMAILJS: {
-      PUBLIC_KEY: string;
-      SERVICE: string;
-      CONTACT_TEMPLATE: string;
+  email: {
+    host: string;
+    user: string;
+    password: string;
+    port: string;
+    emailJs: {
+      publicKey: string;
+      service: string;
+      contactTemplate: string;
     };
   };
 }
