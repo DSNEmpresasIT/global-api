@@ -10,7 +10,7 @@ import { MailerService } from './mailer/mailer.service';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserCredentialModule } from './user-credential/user-credential.module';
+import { ClientCredentialModule } from './user-credential/client-credential.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { UserCredentialModule } from './user-credential/user-credential.module';
     MongooseModule.forRoot(
       process.env.MONGODB_DEVELOPMENT
     ),
-    UserCredentialModule,
+    ClientCredentialModule,
   ],
   controllers: [AppController, SocialmediaController, MailerController],
   providers: [

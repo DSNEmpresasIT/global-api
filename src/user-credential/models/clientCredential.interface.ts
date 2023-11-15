@@ -1,4 +1,4 @@
-export interface UserCredential {
+export interface ClientCredential {
   clientId: string;
   supabaseUrl?: string;
   supabaseKey?: string;
