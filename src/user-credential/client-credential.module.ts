@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   ClientCredential,
   ClientCredentialSchema,
-} from './schemas/ClientCredential.entity';
+} from './schemas/ClientCredential.schema';
 
 @Module({
   imports: [

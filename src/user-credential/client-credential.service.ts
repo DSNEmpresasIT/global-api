@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ClientCredential } from './schemas/ClientCredential.entity';
+import { ClientCredential } from './schemas/ClientCredential.schema';
 import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
 
 
