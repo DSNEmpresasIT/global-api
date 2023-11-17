@@ -11,6 +11,7 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClientCredentialModule } from './user-credential/client-credential.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
     MongooseModule.forRoot(
       process.env.MONGODB_DEVELOPMENT
     ),
-    ClientCredentialModule
+    ClientCredentialModule,
+    UserModule
   ],
   controllers: [AppController, SocialmediaController, MailerController],
   providers: [

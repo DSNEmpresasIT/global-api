@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { ClientCredentialService } from './client-credential.service';
-import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
+import { ClientCredential as ClientCredentialDto } from '../models/clientCredential.interface';
 
 @Controller('user-credential')
 export class ClientCredentialController {
