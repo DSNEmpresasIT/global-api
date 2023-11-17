@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Email, Facebook, ReCaptchaKeys } from '../models/clientCredential.interface';
 @Schema()
-export class ClientCredential extends Document {
+export class ClientCredential extends Document implements ClientCredential {
   @Prop({ required: true })
   clientName: string;
 
@@ -12,32 +13,16 @@ export class ClientCredential extends Document {
   supabaseKey: string;
 
   @Prop({ required: false, type: Object })
-  facebook: {
-    tokenId: string;
-    pageId: string;
-  };
+  facebook: Facebook;
 
   @Prop({ required: false })
   instagram: string;
 
   @Prop({ required: false, type: Object })
-  recapchap: {
-    key: string;
-    secretKey: string;
-  };
+  recapcha: ReCaptchaKeys;
 
   @Prop({ required: false, type: Object })
-  email: {
-    host: string;
-    user: string;
-    password: string;
-    port: string;
-    emailJs: {
-      publicKey: string;
-      service: string;
-      contactTemplate: string;
-    };
-  };
+  email: Email;
 }
-export const ClientCredentialSchema =
-  SchemaFactory.createForClass(ClientCredential);
+
+export const ClientCredentialSchema = SchemaFactory.createForClass(ClientCredential);
