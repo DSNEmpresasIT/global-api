@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/user/models/user.interface';
@@ -12,26 +12,34 @@ export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async create(RegisterDTO: RegisterDTO) {
-    const { email } = RegisterDTO;
-    const user = await this.userModel.findOne({ email });
-    if (user) {
-      throw new HttpException('user already exists', HttpStatus.BAD_REQUEST);
+    try {
+      const { email } = RegisterDTO;
+      const user = await this.userModel.findOne({ email });
+      if (user) {
+        throw new BadRequestException('User already exists');
+      }
+      const createdUser = new this.userModel(RegisterDTO);
+      await createdUser.save();
+      return this.sanitizeUser(createdUser);
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    const createdUser = new this.userModel(RegisterDTO);
-    await createdUser.save();
-    return this.sanitizeUser(createdUser);
   }
 
   async findByLogin(UserDTO: LoginDTO) {
-    const { email, password } = UserDTO;
-    const user = await this.userModel.findOne({ email });
-    if (!user) {
-      throw new HttpException('user doesnt exists', HttpStatus.BAD_REQUEST);
-    }
-    if (await bcrypt.compare(password, user.password)) {
-      return this.sanitizeUser(user);
-    } else {
-      throw new HttpException('invalid credential', HttpStatus.BAD_REQUEST);
+    try {
+      const { email, password } = UserDTO;
+      const user = await this.userModel.findOne({ email });
+      if (!user) {
+        throw new BadRequestException('User does not exist');
+      }
+      if (await bcrypt.compare(password, user.password)) {
+        return this.sanitizeUser(user);
+      } else {
+        throw new BadRequestException('Invalid credentials');
+      }
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -43,7 +51,11 @@ export class UserService {
   }
 
   async findByPayload(payload: Payload) {
-    const { email } = payload;
-    return await this.userModel.findOne({ email });
+    try {
+      const { email } = payload;
+      return await this.userModel.findOne({ email });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }
