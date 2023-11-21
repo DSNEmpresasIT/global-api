@@ -6,6 +6,7 @@ import {
   ClientCredential,
   ClientCredentialSchema,
 } from './schemas/ClientCredential.schema';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [

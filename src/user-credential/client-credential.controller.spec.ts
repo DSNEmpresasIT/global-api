@@ -9,7 +9,9 @@ describe('ClientCredentialController', () => {
       controllers: [ClientCredentialController],
     }).compile();
 
-    controller = module.get<ClientCredentialController>(ClientCredentialController);
+    controller = module.get<ClientCredentialController>(
+      ClientCredentialController,
+    );
   });
 
   it('should be defined', () => {

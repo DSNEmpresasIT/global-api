@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { ClientCredentialService } from './client-credential.service';
 import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
 
@@ -11,8 +11,9 @@ export class ClientCredentialController {
     @Res() res,
     @Body() createClientCredential: ClientCredentialDto,
   ) {
-    const userCred =
-      await this.userCredService.createClientCredential(createClientCredential);
+    const userCred = await this.userCredService.createClientCredential(
+      createClientCredential,
+    );
     return res.status(HttpStatus.OK).json({
       message: 'received',
       userCred: userCred,
