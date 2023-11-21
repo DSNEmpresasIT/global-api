@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClientCredentialModule } from './user-credential/client-credential.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,21 +21,13 @@ import { UserModule } from './user/user.module';
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '60s' },
-      
     }),
-    MongooseModule.forRoot(
-      process.env.MONGODB_DEVELOPMENT
-    ),
+    MongooseModule.forRoot(process.env.MONGODB_DEVELOPMENT),
     ClientCredentialModule,
-    UserModule
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController, SocialmediaController, MailerController],
-  providers: [
-    AppService, 
-    SocialmediaService, 
-    MailerService,
-    JwtStrategy
-  ],
+  providers: [AppService, SocialmediaService, MailerService, JwtStrategy],
 })
-
 export class AppModule {}

@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { BadGatewayException, BadRequestException } from '@nestjs/common';
+import { BadGatewayException } from '@nestjs/common';
 
 export interface ConnectionDto {
   host: string;
@@ -25,18 +25,18 @@ export async function sendEmail(connection: ConnectionDto, mail: MailDto) {
       secure: true,
       auth: {
         user,
-        pass
-      }
-    })
+        pass,
+      },
+    });
 
     const info = await transporter.sendMail({
       from,
       to,
       subject,
-      html
-    })
+      html,
+    });
 
-    return undefined;
+    return info;
   } catch (error) {
     throw new BadGatewayException('sendEmail -client error', error.message);
   }

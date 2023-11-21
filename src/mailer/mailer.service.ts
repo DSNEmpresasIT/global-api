@@ -1,4 +1,4 @@
-import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConnectionDto, MailDto, sendEmail } from 'src/libs/mailer-client';
 import { SendEmailDto } from './dto/mailer.dto';
 
@@ -9,7 +9,7 @@ export class MailerService {
       host: process.env.HOST_JAUREGUI,
       port: +process.env.PORT_JAUREGUI,
       user: process.env.USER_JAUREGUI,
-      pass: process.env.PASS_JAUREGUI
+      pass: process.env.PASS_JAUREGUI,
     };
 
     const mail: MailDto = {
@@ -24,13 +24,13 @@ export class MailerService {
           <b>Mensaje: </b> <br/>
           <p>${body.message}</p>
         </div>
-      `
-    }
+      `,
+    };
 
     await sendEmail(connection, mail);
     return {
       message: 'Mail enviado exitósamente',
-      date: new Date().toDateString()
+      date: new Date().toDateString(),
     };
   }
 }

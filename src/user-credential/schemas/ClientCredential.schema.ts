@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Email, Facebook, ReCaptchaKeys } from '../../models/clientCredential.interface';
+import { Email, Facebook, ReCaptchaKeys } from '../models/clientCredential.interface';
 @Schema()
 export class ClientCredential extends Document implements ClientCredential {
   @Prop({ required: true })

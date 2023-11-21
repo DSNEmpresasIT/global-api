@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   ClientCredential,
   ClientCredentialSchema,
-} from '../schemas/ClientCredential.schema';
+} from './schemas/ClientCredential.schema';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

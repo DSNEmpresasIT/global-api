@@ -16,13 +16,13 @@ export interface Facebook {
 export interface ReCaptchaKeys {
   key: string;
   secretKey: string;
-} 
+}
 
 export interface Email {
   host: string;
   user: string;
   password: string;
-  port:string;
+  port: string;
   emailJS?: EmailJs;
 }
 

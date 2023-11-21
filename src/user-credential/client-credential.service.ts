@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ClientCredential } from '../schemas/ClientCredential.schema';
-import { ClientCredential as ClientCredentialDto } from '../models/clientCredential.interface';
-
+import { ClientCredential } from './schemas/ClientCredential.schema';
+import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
 
 @Injectable()
 export class ClientCredentialService {
@@ -17,7 +16,8 @@ export class ClientCredentialService {
   }
 
   async getClientCredential(clientCredID: string): Promise<ClientCredential> {
-    const ClientCredential = await this.ClientCredentialModel.findById(clientCredID);
+    const ClientCredential =
+      await this.ClientCredentialModel.findById(clientCredID);
     return ClientCredential;
   }
 
@@ -28,7 +28,9 @@ export class ClientCredentialService {
     return await clientCred.save();
   }
 
-  async deleteClientCredential(clientCredID: string): Promise<ClientCredential> {
+  async deleteClientCredential(
+    clientCredID: string,
+  ): Promise<ClientCredential> {
     const deletclientCred =
       await this.ClientCredentialModel.findByIdAndDelete(clientCredID);
     return deletclientCred;
@@ -38,11 +40,12 @@ export class ClientCredentialService {
     clientCredID: string,
     createclientCred: ClientCredential,
   ): Promise<ClientCredential> {
-    const updatedclientCred = await this.ClientCredentialModel.findByIdAndUpdate(
-      clientCredID,
-      createclientCred,
-      { new: true },
-    );
+    const updatedclientCred =
+      await this.ClientCredentialModel.findByIdAndUpdate(
+        clientCredID,
+        createclientCred,
+        { new: true },
+      );
     return updatedclientCred;
   }
 }

@@ -7,13 +7,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: [
-      'http://localhost:4321', 
+      'http://localhost:4321',
       'https://estudiojuridicojauregui.com.ar',
-      'http://estudiojuridicojauregui.com.ar'
+      'http://estudiojuridicojauregui.com.ar',
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true
-  })
+    credentials: true,
+  });
   await app.listen(process.env.PORT, '0.0.0.0');
 }
 

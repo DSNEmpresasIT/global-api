@@ -1,20 +1,28 @@
+/* eslint-disable prettier/prettier */
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
+import { AuthService } from '../auth.service';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor () {
+  constructor (private authService : AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: `${process.env.JWT_SECRET_KEY}`
+      secretOrKey: process.env.JWT_SECRET_KEY,
     });
   }
 
-  async validate(payload: any) {
-    return {
-      userId: payload.userId,
-      clientName: payload.clientName
-    };
+  async validate(payload: any, done: VerifiedCallback) {
+    const user = await this.authService.validateUser(payload);
+    if (!user) {
+      return done(
+        new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED),
+        false,
+      );
+    }
+
+    return done(null, user, payload.iat);
   }
 }
 
