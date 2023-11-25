@@ -3,6 +3,7 @@ import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Project, ProjectSchema } from './schema/Project.schema';
+import { ClientCredential, ClientCredentialSchema } from 'src/user-credential/schemas/ClientCredential.schema';
 
 @Module({
     imports: [
@@ -10,6 +11,10 @@ import { Project, ProjectSchema } from './schema/Project.schema';
         {
           name: Project.name,
           schema: ProjectSchema
+        },
+        {
+          name: ClientCredential.name,
+          schema: ClientCredentialSchema
         }
       ])
     ],

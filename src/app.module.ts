@@ -13,8 +13,6 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
-import { ProjectsController } from './projects/projects.controller';
-import { ProjectsService } from './projects/projects.service';
 
 @Module({
   imports: [
