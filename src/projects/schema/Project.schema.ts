@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from 'mongoose';
-import { ImageUrl } from "../dto/project-dto";
+import { ImageUrl } from "../model/project.interface";
 
 @Schema()
 export class Project extends Document implements Project {
   @Prop({ required: true })
   clientName: string;
-  @Prop({ required: false, type: Array, maxlength: 3 })
+  @Prop({ required: false, type: Array, maxlength: 4 })
   imageUrl: ImageUrl[];
   @Prop({ required: false, minlength: 3 })
   title: string;
