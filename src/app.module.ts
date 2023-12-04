@@ -12,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ClientCredentialModule } from './user-credential/client-credential.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
     ClientCredentialModule,
     UserModule,
     AuthModule,
+    ProjectsModule,
   ],
   controllers: [AppController, SocialmediaController, MailerController],
   providers: [AppService, SocialmediaService, MailerService, JwtStrategy],
