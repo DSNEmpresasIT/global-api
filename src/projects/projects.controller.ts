@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
-import { CreateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
+import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -21,11 +21,14 @@ export class ProjectsController {
     return await this.service.getProjectData(projectId);
   }
 
-  @Put(':projectId')
-  async updateProject() {
-    return {
-      ok: true
-    }
+  @Put('/:clientName/:projectId')
+  async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
+    return await this.service.updateProject(param.projectId, param.clientName, body);
+  }
+
+  @Put(':projectId/image')
+  async updateProjectImage(@Param() param, @Body() body: UpdateProjectImageDto) {
+    return await this.service.updateProjectImage(param.projectId, body)
   }
 
   @Delete(':projectId')

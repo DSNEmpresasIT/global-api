@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBase64, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MaxLength, MinLength, ValidateNested } from "class-validator";
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBase64, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MaxLength, MinLength, Validate, ValidateNested } from "class-validator";
 import { ImageUrl } from "../model/project.interface";
 
 export class CreateProjectDto {
@@ -35,7 +35,22 @@ export class UpdateProjectImageDto {
   @IsNotEmpty()
   @IsString()
   image: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   index: number;
+}
+
+export class UpdateProjectDto {
+  @IsOptional()
+  @IsString()
+  readonly title?: string;
+  @IsOptional()
+  @IsString()
+  readonly description?: string;
+  @IsOptional()
+  @IsString()
+  readonly type?: string;
+  @IsOptional()
+  @IsString()
+  readonly project_date?: string;
 }
