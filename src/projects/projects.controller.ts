@@ -5,9 +5,9 @@ import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto
 @Controller('projects')
 export class ProjectsController {
   constructor(readonly service: ProjectsService) {}
-  @Post('create')
-  async createProject(@Body() body: CreateProjectDto) {
-    return this.service.createProject(body)
+  @Post('create/:clientName')
+  async createProject(@Body() body: CreateProjectDto, @Param() param) {
+    return this.service.createProject(param.clientName, body)
   }
  
   @Get('client/:clientName')
@@ -21,7 +21,7 @@ export class ProjectsController {
     return await this.service.getProjectData(projectId);
   }
 
-  @Put('/:clientName/:projectId')
+  @Put(':clientName/:projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
     return await this.service.updateProject(param.projectId, param.clientName, body);
   }

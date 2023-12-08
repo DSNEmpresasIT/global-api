@@ -5,11 +5,8 @@ import { ImageUrl } from "../model/project.interface";
 export class CreateProjectDto {
   @IsNotEmpty()
   @IsString()
-  clientName: string;
-  @IsNotEmpty()
-  @IsString()
   title: string;
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   description?: string;
   @IsNotEmpty()

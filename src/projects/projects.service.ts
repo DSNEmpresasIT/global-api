@@ -24,11 +24,11 @@ export class ProjectsService {
     }
   }
 
-  async createProject(createProjectDto: CreateProjectDto) {
+  async createProject(clientName: string, createProjectDto: CreateProjectDto) {
     try {
       const imageUrl = [];
       const clientKeys = await this.clientsModel.find({
-        clientName: createProjectDto.clientName
+        clientName
       }).select(['clientName', 'cloudinary']);
       
       if (!clientKeys.length) throw new BadRequestException('Error in createProject service: client not found')
@@ -43,7 +43,8 @@ export class ProjectsService {
 
       const project = await new this.projectsModel({
         ...createProjectDto,
-        imageUrl
+        imageUrl,
+        clientName
       });
   
       await project.save()
