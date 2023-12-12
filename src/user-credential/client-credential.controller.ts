@@ -1,12 +1,12 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Put, Res } from '@nestjs/common';
 import { ClientCredentialService } from './client-credential.service';
 import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
 
-@Controller('user-credential')
+@Controller('api/user-credential')
 export class ClientCredentialController {
   constructor(private userCredService: ClientCredentialService) {}
 
-  @Post('/create')
+  @Post('create')
   async createUserCred(
     @Res() res,
     @Body() createClientCredential: ClientCredentialDto,
@@ -18,5 +18,12 @@ export class ClientCredentialController {
       message: 'received',
       userCred: userCred,
     });
+  }
+
+  @Put(':clientId/update')
+  async updateClientCredential() {
+    return {
+      ok: true
+    }
   }
 }
