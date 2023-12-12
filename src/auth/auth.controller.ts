@@ -1,58 +1,59 @@
-/* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from 'src/user/dto/register.dto';
 import { LoginDTO } from './dto/login.dto';
-import { AuthGuard } from '@nestjs/passport';
+
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private userService: UserService,
-        private authService: AuthService,
-        
-      ) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
+  @Post('register')
+  async register(@Body() registerDTO: RegisterDTO) {
+    const user = await this.userService.create(registerDTO);
+    const payload = {
+      Id: user.id,
+      name: user.name,
+      role: user.role,
+      email: user.email,
+    };
 
- @Get("/onlyauth")
- @UseGuards(AuthGuard("jwt"))
- 
-  async hiddenInformation(){
-    return  "hidden information";
+    const token = await this.authService.signPayload(payload);
+    return { user, token };
   }
-  
-@Get("/anyone")
+  @Post('login')
+  async login(@Body() loginDTO: LoginDTO) {
+    const user = await this.userService.findByLogin(loginDTO);
+    const payload = {
+      Id: user.id,
+      name: user.name,
+      role: user.role,
+      email: user.email,
+    };
+    const token = await this.authService.signPayload(payload);
+    return { user, token };
+  }
+  @Post('verify-token')
+  async verifyToken(@Req() req) {
+    const token = req.headers.authorization;
 
-async publicInformation(){
-return  "this can be seen by anyone";
-}
-
-    @Post('register')
-    async register(@Body() registerDTO: RegisterDTO) {
-      const user = await this.userService.create(registerDTO);
-      const payload = {
-        Id: user.id,
-        name: user.name,
-        role: user.role,
-        email: user.email
-      };
-  
-      const token = await this.authService.signPayload(payload);
-      return { user, token };
+    if (!token) {
+      throw new UnauthorizedException('Token not provided');
     }
-    @Post('login')
-    async login(@Body() loginDTO: LoginDTO) {
-      const user = await this.userService.findByLogin(loginDTO);
-      const payload = {
-        Id: user.id,
-        name: user.name,
-        role: user.role,
-        email: user.email
-      };
-      const token = await this.authService.signPayload(payload);
-      return { user, token};
+    try {
+      const decoded = await this.authService.verifyToken(token);
+      return { message: 'Valid token', user: decoded };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
     }
-
-
- 
+  }
 }
