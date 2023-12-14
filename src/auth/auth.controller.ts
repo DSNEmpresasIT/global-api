@@ -21,10 +21,11 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
     const payload = {
-      Id: user.id,
+      id: user.id,
       clientName: user.clientName,
       role: user.role,
-      email: user.email
+      email: user.email,
+      userName: user.userName
     };
 
     const token = await this.authService.signPayload(payload);
@@ -35,10 +36,11 @@ export class AuthController {
   async login(@Body() loginDTO: LoginDTO) {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
-      Id: user.id,
+      id: user.id,
       clientName: user.clientName,
       role: user.role,
-      email: user.email
+      email: user.email,
+      userName: user.userName
     };
     const token = await this.authService.signPayload(payload);
     return { user, token};

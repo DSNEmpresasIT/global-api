@@ -13,4 +13,7 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+  @IsNotEmpty()
+  @IsString()
+  userName: string;
 }

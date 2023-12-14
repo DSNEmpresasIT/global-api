@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('api/projects')
 export class ProjectsController {
-  constructor(readonly service: ProjectsService) {}
+  constructor(private readonly service: ProjectsService) {}
   
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post('create/:clientName')
   async createProject(@Body() body: CreateProjectDto, @Param() param) {
     return this.service.createProject(param.clientName, body)
@@ -24,19 +24,19 @@ export class ProjectsController {
     return await this.service.getProjectData(projectId);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put(':clientName/:projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
     return await this.service.updateProject(param.projectId, param.clientName, body);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put(':projectId/image')
   async updateProjectImage(@Param() param, @Body() body: UpdateProjectImageDto) {
     return await this.service.updateProjectImage(param.projectId, body)
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Delete(':projectId')
   async deleteProject() {
     return {
