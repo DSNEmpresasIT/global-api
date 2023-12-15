@@ -13,6 +13,7 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
+import { CmsModule } from './cms/cms.module';
 
 @Module({
   imports: [
@@ -21,13 +22,14 @@ import { ProjectsModule } from './projects/projects.module';
     }),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '8h' },
     }),
-    MongooseModule.forRoot(process.env.MONGODB_DEVELOPMENT),
+    MongooseModule.forRoot(process.env.LOCAL === 'true' ? process.env.MONGODB_DEVELOPMENT : process.env.MONGODB_PRODUCTION),
     ClientCredentialModule,
     UserModule,
     AuthModule,
     ProjectsModule,
+    CmsModule,
   ],
   controllers: [AppController, SocialmediaController, MailerController],
   providers: [AppService, SocialmediaService, MailerService, JwtStrategy],

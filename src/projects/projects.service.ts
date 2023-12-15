@@ -55,10 +55,10 @@ export class ProjectsService {
     }
   }
 
-  async updateProject(projectId: string, clientName: string, updateProjectDto: UpdateProjectDto) {
+  async updateProject(projectId: string, updateProjectDto: UpdateProjectDto) {
     try {
       return await this.projectsModel.updateOne(
-        { _id: projectId, clientName },
+        { _id: projectId },
         { $set: { 
           title: updateProjectDto.title, 
           description: updateProjectDto.description,
