@@ -26,7 +26,7 @@ import { CmsService } from './cms/cms.service';
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '8h' },
     }),
-    MongooseModule.forRoot(process.env.MONGODB_DEVELOPMENT),
+    MongooseModule.forRoot(process.env.LOCAL === 'true' ? process.env.MONGODB_DEVELOPMENT : process.env.MONGODB_PRODUCTION),
     ClientCredentialModule,
     UserModule,
     AuthModule,
