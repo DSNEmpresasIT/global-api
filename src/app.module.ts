@@ -13,6 +13,8 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
+import { CmsController } from './cms/cms.controller';
+import { CmsService } from './cms/cms.service';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { ProjectsModule } from './projects/projects.module';
     AuthModule,
     ProjectsModule,
   ],
-  controllers: [AppController, SocialmediaController, MailerController],
-  providers: [AppService, SocialmediaService, MailerService, JwtStrategy],
+  controllers: [AppController, SocialmediaController, MailerController, CmsController],
+  providers: [AppService, SocialmediaService, MailerService, JwtStrategy, CmsService],
 })
 export class AppModule {}
