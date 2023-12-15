@@ -14,8 +14,6 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { CmsModule } from './cms/cms.module';
-import { CmsController } from './cms/cms.controller';
-import { CmsService } from './cms/cms.service';
 
 @Module({
   imports: [
