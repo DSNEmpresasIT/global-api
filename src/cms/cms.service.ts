@@ -21,7 +21,7 @@ export class CmsService {
 
       return clientContent;
     } catch (error) {
-      
+      throw new BadGatewayException('error on CMS services, createClientContent: ', error.message) 
     }
   }
   
