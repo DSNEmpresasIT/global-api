@@ -13,6 +13,7 @@ import { ClientCredentialModule } from './user-credential/client-credential.modu
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
+import { CmsModule } from './cms/cms.module';
 import { CmsController } from './cms/cms.controller';
 import { CmsService } from './cms/cms.service';
 
@@ -30,8 +31,9 @@ import { CmsService } from './cms/cms.service';
     UserModule,
     AuthModule,
     ProjectsModule,
+    CmsModule,
   ],
-  controllers: [AppController, SocialmediaController, MailerController, CmsController],
-  providers: [AppService, SocialmediaService, MailerService, JwtStrategy, CmsService],
+  controllers: [AppController, SocialmediaController, MailerController],
+  providers: [AppService, SocialmediaService, MailerService, JwtStrategy],
 })
 export class AppModule {}
