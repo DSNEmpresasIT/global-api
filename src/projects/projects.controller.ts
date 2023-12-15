@@ -27,7 +27,7 @@ export class ProjectsController {
   @UseGuards(JwtGuard)
   @Put(':clientName/:projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
-    return await this.service.updateProject(param.projectId, param.clientName, body);
+    return await this.service.updateProject(param.projectId, body);
   }
 
   @UseGuards(JwtGuard)
