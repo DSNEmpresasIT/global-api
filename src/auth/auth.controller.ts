@@ -7,40 +7,43 @@ import {
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-import { RegisterDTO } from 'src/user/dto/register.dto';
-import { LoginDTO } from './dto/login.dto';
+import { RegisterDto } from 'src/user/dto/register.dto';
+import { LoginDTO } from './dto/auth-dto';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
-    private userService: UserService,
-    private authService: AuthService,
+      private readonly userService: UserService,
+      private readonly authService: AuthService,
   ) {}
-
-  @Post('register')
-  async register(@Body() registerDTO: RegisterDTO) {
-    const user = await this.userService.create(registerDTO);
+  
+  @Post('secret_endpoint/register')
+  async register(@Body() registerDto: RegisterDto) {
+    const user = await this.userService.create(registerDto);
     const payload = {
-      Id: user.id,
-      name: user.name,
+      id: user.id,
+      clientName: user.clientName,
       role: user.role,
       email: user.email,
+      userName: user.userName
     };
 
     const token = await this.authService.signPayload(payload);
     return { user, token };
   }
+
   @Post('login')
   async login(@Body() loginDTO: LoginDTO) {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
-      Id: user.id,
-      name: user.name,
+      id: user.id,
+      clientName: user.clientName,
       role: user.role,
       email: user.email,
+      userName: user.userName
     };
     const token = await this.authService.signPayload(payload);
-    return { user, token };
+    return { user, token};
   }
   @Post('verify-token')
   async verifyToken(@Req() req) {

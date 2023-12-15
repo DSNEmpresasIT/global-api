@@ -21,6 +21,7 @@ export const uploadImage = async (
       id: imageData.public_id 
     };
   } catch (error) {
-    throw new BadGatewayException(`Error in cloudinary-client uploadImage: `, error.message)
+    console.log(error)
+    throw new BadGatewayException(`Error in cloudinary-client uploadImage: `, error)
   }
 }

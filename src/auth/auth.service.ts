@@ -5,7 +5,7 @@ import { Payload } from './types/payload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   async signPayload(payload: Payload) {
     return sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });
