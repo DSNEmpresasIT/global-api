@@ -64,7 +64,8 @@ export class ProjectsService {
           title: updateProjectDto.title, 
           description: updateProjectDto.description,
           project_date: updateProjectDto.project_date,
-          type: updateProjectDto.type 
+          type: updateProjectDto.type,
+          projectClient: updateProjectDto.projectClient
         } }  
       )
     } catch (error) {
