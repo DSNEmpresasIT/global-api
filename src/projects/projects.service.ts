@@ -35,6 +35,7 @@ export class ProjectsService {
       
       if (createProjectDto.imageUrl && clientKeys) {
         await Promise.all(createProjectDto.imageUrl.map(async (image) => {
+          if (!image) return;
           const url = await uploadImage(clientKeys[0].cloudinary, image);
 
           imageUrl.push(url);
