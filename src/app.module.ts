@@ -9,7 +9,7 @@ import { MailerService } from './mailer/mailer.service';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientCredentialModule } from './user-credential/client-credential.module';
+import { ClientCredentialModule } from './client-credential/client-credential.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';

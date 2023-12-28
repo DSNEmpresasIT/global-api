@@ -4,9 +4,9 @@ import { Project } from './schema/Project.schema';
 import { Model } from 'mongoose';
 
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
-import { ClientCredential } from 'src/user-credential/schemas/ClientCredential.schema';
+import { ClientCredential } from 'src/client-credential/schemas/ClientCredential.schema';
 import { uploadImage } from 'src/libs/cloudinary-client';
-import { Cloudinary } from 'src/user-credential/models/clientCredential.interface';
+import { Cloudinary } from 'src/client-credential/models/clientCredential.interface';
 
 @Injectable()
 export class ProjectsService {
