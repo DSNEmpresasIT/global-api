@@ -1,10 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConnectionDto, MailDto, sendEmail } from 'src/libs/mailer-client';
 import { SendEmailDto } from './dto/mailer.dto';
+import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class MailerService {
-  async sendEmail(body: SendEmailDto) {
+  constructor(
+    @InjectModel(ClientCredential.name)
+    private clientCredentialModule: Model<ClientCredential>
+  ){}
+  async sendEmailToJauregui(body: SendEmailDto) {
     const connection: ConnectionDto = {
       host: process.env.HOST_JAUREGUI,
       port: +process.env.PORT_JAUREGUI,
@@ -32,5 +39,40 @@ export class MailerService {
       message: 'Mail enviado exitósamente',
       date: new Date().toDateString(),
     };
+  }
+
+  async sendEmail(clientName: string, body: SendEmailDto) {
+    const clientCredentail = await this.clientCredentialModule.findOne({ clientName }).select('email')
+    if (!clientCredentail.email) return new BadRequestException('Client credential not found') 
+    const clientEmail = clientCredentail.email;
+    
+    const connection: ConnectionDto = {
+      host: clientEmail.host,
+      port: +clientEmail.port,
+      user: clientEmail.user,
+      pass: clientEmail.password,
+    };
+
+    return connection;
+    // const mail: MailDto = {
+    //   from: body.from,
+    //   to: process.env.TO_JAUREGUI,
+    //   subject: body.subject,
+    //   html: `
+    //     <div>
+    //       <b>Cliente: ${body.fullName}</b>
+    //       <br/>
+    //       <br/>
+    //       <b>Mensaje: </b> <br/>
+    //       <p>${body.message}</p>
+    //     </div>
+    //   `,
+    // };
+
+    // await sendEmail(connection, mail);
+    // return {
+    //   message: 'Mail enviado exitósamente',
+    //   date: new Date().toDateString(),
+    // };
   }
 }

@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { SocialmediaController } from './socialmedia/socialmedia.controller';
 import { SocialmediaService } from './socialmedia/socialmedia.service';
 import { ConfigModule } from '@nestjs/config';
-import { MailerController } from './mailer/mailer.controller';
-import { MailerService } from './mailer/mailer.service';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { CmsModule } from './cms/cms.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -30,8 +29,9 @@ import { CmsModule } from './cms/cms.module';
     AuthModule,
     ProjectsModule,
     CmsModule,
+    MailerModule,
   ],
-  controllers: [AppController, SocialmediaController, MailerController],
-  providers: [AppService, SocialmediaService, MailerService, JwtStrategy],
+  controllers: [AppController, SocialmediaController],
+  providers: [AppService, SocialmediaService, JwtStrategy],
 })
 export class AppModule {}
