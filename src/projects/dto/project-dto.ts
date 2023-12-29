@@ -9,7 +9,7 @@ export class CreateProjectDto {
   @IsNotEmpty()
   @IsString()
   description?: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   type: string;
   @IsOptional()
@@ -50,4 +50,7 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsString()
   readonly project_date?: string;
+  @IsOptional()
+  @IsString()
+  projectClient: string;
 }

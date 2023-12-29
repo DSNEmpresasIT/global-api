@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientCredential } from './schemas/ClientCredential.schema';
-import { ClientCredential as ClientCredentialDto } from './models/clientCredential.interface';
+import { CreateClientCredentialDto, UpdateClientCredentialDto } from './dto/client-credentials-dto';
 
 @Injectable()
 export class ClientCredentialService {
@@ -33,15 +33,20 @@ export class ClientCredentialService {
   }
 
   async createClientCredential(
-    ClientCredential: ClientCredentialDto,
+    clientId: string,
+    ClientCredentialDto: CreateClientCredentialDto,
   ): Promise<ClientCredential> {
     try {
-      const validate = await this.ClientCredentialModel.find({ clientName: ClientCredential.clientName })
+      const validate = await this.ClientCredentialModel.find({ clientId })
       if (validate.length) throw new BadRequestException('This user are already in the database')
 
-      const clientCred = await new this.ClientCredentialModel(ClientCredential);
+      const clientCredential = await new this.ClientCredentialModel({
+        ...ClientCredentialDto,
+        clientId
+      });
+      await clientCredential.save();
 
-      return await clientCred.save();
+      return clientCredential;
     } catch (error) {
       throw new NotFoundException('Unable to create client credential');
     }
@@ -63,22 +68,16 @@ export class ClientCredentialService {
   }
 
   async updateClientCredential(
-    clientCredID: string,
-    createclientCred: ClientCredential,
-  ): Promise<ClientCredential> {
+    clientId: string,
+    updateClientCredentialDto: UpdateClientCredentialDto,
+  ) {
     try {
-      const updatedClientCred =
-        await this.ClientCredentialModel.findByIdAndUpdate(
-          clientCredID,
-          createclientCred,
-          { new: true },
-        );
-      if (!updatedClientCred) {
-        throw new NotFoundException('Client credential not found for updating');
-      }
-      return updatedClientCred;
+      return await this.ClientCredentialModel.updateOne(
+        { clientId },
+        updateClientCredentialDto,
+      );
     } catch (error) {
-      throw new NotFoundException('Unable to update client credential');
+      throw new NotFoundException('Unable to update client credential: ' + error.message);
     }
   }
 }

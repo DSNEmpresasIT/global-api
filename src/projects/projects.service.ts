@@ -4,9 +4,9 @@ import { Project } from './schema/Project.schema';
 import { Model } from 'mongoose';
 
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
-import { ClientCredential } from 'src/user-credential/schemas/ClientCredential.schema';
+import { ClientCredential } from 'src/client-credential/schemas/ClientCredential.schema';
 import { uploadImage } from 'src/libs/cloudinary-client';
-import { Cloudinary } from 'src/user-credential/models/clientCredential.interface';
+import { Cloudinary } from 'src/client-credential/models/clientCredential.interface';
 
 @Injectable()
 export class ProjectsService {
@@ -35,6 +35,7 @@ export class ProjectsService {
       
       if (createProjectDto.imageUrl && clientKeys) {
         await Promise.all(createProjectDto.imageUrl.map(async (image) => {
+          if (!image) return;
           const url = await uploadImage(clientKeys[0].cloudinary, image);
 
           imageUrl.push(url);
@@ -63,7 +64,8 @@ export class ProjectsService {
           title: updateProjectDto.title, 
           description: updateProjectDto.description,
           project_date: updateProjectDto.project_date,
-          type: updateProjectDto.type 
+          type: updateProjectDto.type,
+          projectClient: updateProjectDto.projectClient
         } }  
       )
     } catch (error) {
