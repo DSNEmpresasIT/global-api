@@ -17,19 +17,19 @@ export class ProjectsService {
     private clientsModel: Model<ClientCredential>
   ) {}
 
-  async getAllClientProjects(clientName: string) {
-    const clientProjects = await this.projectsModel.find({ clientName: clientName });
+  async getAllClientProjects(clientId: string) {
+    const clientProjects = await this.projectsModel.find({ clientId });
     return {
       projects: clientProjects
     }
   }
 
-  async createProject(clientName: string, createProjectDto: CreateProjectDto) {
+  async createProject(clientId: string, createProjectDto: CreateProjectDto) {
     try {
       const imageUrl = [];
       const clientKeys = await this.clientsModel.find({
-        clientName
-      }).select(['clientName', 'cloudinary']);
+        clientId
+      }).select(['clientId', 'cloudinary']);
       
       if (!clientKeys.length) throw new BadRequestException('Error in createProject service: client not found')
       
@@ -45,7 +45,7 @@ export class ProjectsService {
       const project = await new this.projectsModel({
         ...createProjectDto,
         imageUrl,
-        clientName
+        clientId
       });
   
       await project.save()
@@ -88,7 +88,7 @@ export class ProjectsService {
     let clientKeys: ClientCredential 
     try {
       if (!cloudinaryKeys) {
-        clientKeys = await this.clientsModel.findOne({ clientName: updateProjectImageDto.clientName }).select('cloudinary'); 
+        clientKeys = await this.clientsModel.findOne({ clientId: updateProjectImageDto.clientId }).select('cloudinary'); 
         if (!clientKeys) throw new BadRequestException('Error in uploadProjectImage service: Client not found');
       }
 

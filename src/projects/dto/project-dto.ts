@@ -28,7 +28,7 @@ export class CreateProjectDto {
 export class UpdateProjectImageDto {
   @IsNotEmpty()
   @IsString()
-  clientName: string;
+  clientId: string;
   @IsNotEmpty()
   @IsString()
   image: string;

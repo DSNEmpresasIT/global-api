@@ -15,8 +15,8 @@ export class CmsController {
     return await this.cmsService.createClientContent(body)
   }
   
-  @Get(':clientName/projects-types')
+  @Get(':clientId/projects-types')
   async getClientProjectCMS(@Param() param) {
-    return await this.cmsService.getClientProjectTypes(param.clientName);
+    return await this.cmsService.getClientProjectTypes(param.clientId);
   }
 }
