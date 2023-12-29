@@ -22,7 +22,6 @@ export class AuthController {
     const user = await this.userService.create(registerDto);
     const payload = {
       id: user.id,
-      clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName
@@ -37,13 +36,12 @@ export class AuthController {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
       id: user.id,
-      clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName
     };
     const token = await this.authService.signPayload(payload);
-    return { user, token};
+    return { user: { id: user._id, ...user, _id: undefined }, token};
   }
   @Post('verify-token')
   async verifyToken(@Req() req) {

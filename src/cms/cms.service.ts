@@ -13,7 +13,7 @@ export class CmsService {
 
   async createClientContent(CreateContentDto: CreateClientContentDto) {
     try {
-      const verify = await this.contentModel.findOne({ clientName: CreateContentDto.clientName })
+      const verify = await this.contentModel.findOne({ clientId: CreateContentDto.clientId })
       if (verify) throw new BadRequestException('Client already created')
 
       const clientContent = await new this.contentModel(CreateContentDto);
@@ -25,9 +25,9 @@ export class CmsService {
     }
   }
   
-  async getClientProjectTypes(clientName: string) {
+  async getClientProjectTypes(clientId: string) {
     try {
-      const projectTypes = await this.contentModel.findOne({ clientName }).select('project_types')
+      const projectTypes = await this.contentModel.findOne({ clientId }).select('project_types')
 
       if (!projectTypes) throw new BadRequestException('Client project types not found')
 

@@ -5,7 +5,7 @@ import { ImageUrl } from "../model/project.interface";
 @Schema()
 export class Project extends Document implements Project {
   @Prop({ required: true })
-  clientName: string;
+  clientId: string;
   @Prop({ required: false, type: Array, maxlength: 4 })
   imageUrl: ImageUrl[];
   @Prop({ required: true, minlength: 3 })

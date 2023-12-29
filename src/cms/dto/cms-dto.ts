@@ -5,7 +5,7 @@ import { Type } from "class-transformer";
 export class CreateClientContentDto {
   @IsNotEmpty()
   @IsString()
-  clientName: string;
+  clientId: string;
   @ValidateNested()
   @IsOptional()
   @IsArray()

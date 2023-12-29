@@ -8,15 +8,15 @@ export class ProjectsController {
   constructor(private readonly service: ProjectsService) {}
   
   @UseGuards(JwtGuard)
-  @Post('create/:clientName')
+  @Post('create/:clientId')
   async createProject(@Body() body: CreateProjectDto, @Param() param) {
-    return this.service.createProject(param.clientName, body)
+    return this.service.createProject(param.clientId, body)
   }
  
-  @Get('client/:clientName')
+  @Get(':clientId')
   async getClientProjects(@Param() params) {
-    const clientName = params.clientName;
-    return await this.service.getAllClientProjects(clientName);
+    const clientId = params.clientId;
+    return await this.service.getAllClientProjects(clientId);
   }
 
   @Get(':projectId')
@@ -25,7 +25,7 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtGuard)
-  @Put(':clientName/:projectId')
+  @Put(':projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
     return await this.service.updateProject(param.projectId, body);
   }
