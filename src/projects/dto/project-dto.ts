@@ -38,7 +38,10 @@ export class UpdateProjectImageDto {
 }
 
 export class UpdateProjectDto {
-  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  clientId: string;
+  @IsNotEmpty()
   @IsString()
   readonly title?: string;
   @IsOptional()
@@ -50,7 +53,10 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsString()
   readonly project_date?: string;
-  @IsOptional()
-  @IsString()
-  projectClient: string;
+  @IsNotEmpty()
+  @Type(() => ImageUrl || String || null)
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(4)
+  imageUrl: ImageUrl[] | string[] | null[];
 }
