@@ -12,7 +12,7 @@ export class Project extends Document implements Project {
   title: string;
   @Prop({ required: true, minlength: 3 })
   description: string;
-  @Prop({ required: false, minlength: 3 })
+  @Prop({ required: false })
   type: string;
   @Prop({ required: false, minlength: 3 })
   projectClient: string;

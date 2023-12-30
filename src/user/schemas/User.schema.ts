@@ -5,6 +5,8 @@ import { NextFunction } from 'express';
 export const UserSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
+  clientName: { type: String, required: true },
+  userName: { type: String, required: true }
 });
 
 UserSchema.pre('save', async function (next: NextFunction) {

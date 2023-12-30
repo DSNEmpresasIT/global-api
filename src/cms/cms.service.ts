@@ -29,11 +29,10 @@ export class CmsService {
     try {
       const projectTypes = await this.contentModel.findOne({ clientId }).select('project_types')
 
-      if (!projectTypes) throw new BadRequestException('Client project types not found')
-
       return projectTypes;
     } catch (error) {
-      throw new BadGatewayException('error on CMS services, getClientProjectTypes: ', error.message)
+      console.log(`error on CMS services, getClientProjectTypes: ${error.response.message}`)
+      throw new BadGatewayException(error.response.message)
     }
   }
 }

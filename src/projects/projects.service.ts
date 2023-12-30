@@ -35,9 +35,9 @@ export class ProjectsService {
       
       if (createProjectDto.imageUrl && clientKeys) {
         await Promise.all(createProjectDto.imageUrl.map(async (image) => {
-          if (!image) return;
-          const url = await uploadImage(clientKeys[0].cloudinary, image);
+          if(!image) return;
 
+          const url = await uploadImage(clientKeys[0].cloudinary, image);
           imageUrl.push(url);
         }))
       }
@@ -58,6 +58,20 @@ export class ProjectsService {
 
   async updateProject(projectId: string, updateProjectDto: UpdateProjectDto) {
     try {
+      const clientKeys = await this.clientsModel.findOne({ clientId: updateProjectDto.clientId }).select('cloudinary')
+      let newImageUrl = [];
+
+      await Promise.all(updateProjectDto.imageUrl.map(async (currentImage, index) => {
+        if (!currentImage) return;
+
+        if (typeof currentImage === 'string') {
+          const imageUrl = await uploadImage(clientKeys.cloudinary, currentImage)
+          return newImageUrl[index] = imageUrl;
+        } 
+
+        newImageUrl[index] = currentImage
+      }))
+
       return await this.projectsModel.updateOne(
         { _id: projectId },
         { $set: { 
@@ -65,10 +79,12 @@ export class ProjectsService {
           description: updateProjectDto.description,
           project_date: updateProjectDto.project_date,
           type: updateProjectDto.type,
-          projectClient: updateProjectDto.projectClient
+          projectClient: updateProjectDto.projectClient,
+          imageUrl: newImageUrl 
         } }  
       )
     } catch (error) {
+      console.log(error)
       throw new BadGatewayException(`Error in updateProject: ###${error.message}`)      
     }
   }
