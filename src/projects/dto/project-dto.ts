@@ -32,6 +32,9 @@ export class UpdateProjectImageDto {
   @IsNotEmpty()
   @IsString()
   image: string;
+  @IsNotEmpty()
+  @IsString()
+  projectClient: string;
   @IsOptional()
   @IsNumber()
   index: number;
@@ -53,6 +56,9 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsString()
   readonly project_date?: string;
+  @IsOptional()
+  @IsString()
+  readonly projectClient?: string;
   @IsNotEmpty()
   @Type(() => ImageUrl || String || null)
   @IsArray()
