@@ -12,8 +12,8 @@ export class MailerController {
     return await this.service.sendEmailToJauregui(body);
   }
 
-  @Post(':clientName/send-email')
+  @Post(':clientId/send-email')
   async sendEmalToClient(@Body() body: SendEmailDto, @Param() param) {
-    return await this.service.sendEmail(param.clientName, body)
+    return await this.service.sendEmail(param.clientId, body)
   }
 }

@@ -41,9 +41,9 @@ export class MailerService {
     };
   }
 
-  async sendEmail(clientName: string, body: SendEmailDto) {
-    const clientCredentail = await this.clientCredentialModule.findOne({ clientName }).select('email')
-    if (!clientCredentail.email) return new BadRequestException('Client credential not found') 
+  async sendEmail(clientId: string, body: SendEmailDto) {
+    const clientCredentail = await this.clientCredentialModule.findOne({ clientId }).select('email')
+    if (!clientCredentail?.email) return new BadRequestException('Client credential not found') 
     const clientEmail = clientCredentail.email;
     
     const connection: ConnectionDto = {
@@ -53,26 +53,25 @@ export class MailerService {
       pass: clientEmail.password,
     };
 
-    return connection;
-    // const mail: MailDto = {
-    //   from: body.from,
-    //   to: process.env.TO_JAUREGUI,
-    //   subject: body.subject,
-    //   html: `
-    //     <div>
-    //       <b>Cliente: ${body.fullName}</b>
-    //       <br/>
-    //       <br/>
-    //       <b>Mensaje: </b> <br/>
-    //       <p>${body.message}</p>
-    //     </div>
-    //   `,
-    // };
+    const mail: MailDto = {
+      from: body.from,
+      to: clientEmail.email,
+      subject: body.subject,
+      html: `
+        <div>
+          <b>Cliente: ${body.fullName}</b>
+          <br/>
+          <br/>
+          <b>Mensaje: </b> <br/>
+          <p>${body.message}</p>
+        </div>
+      `,
+    };
 
-    // await sendEmail(connection, mail);
-    // return {
-    //   message: 'Mail enviado exitósamente',
-    //   date: new Date().toDateString(),
-    // };
+    await sendEmail(connection, mail);
+    return {
+      message: 'Mail enviado exitósamente',
+      date: new Date().toDateString(),
+    };
   }
 }
