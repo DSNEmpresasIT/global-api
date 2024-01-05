@@ -13,7 +13,7 @@ export class ProjectsController {
     return this.service.createProject(param.clientId, body)
   }
  
-  @Get('client/:clientName/client')
+  @Get('client/:clientName')
   async getClientProjects(@Param() params) {
     const clientId = params.clientId;
     return await this.service.getAllClientProjects(clientId);
