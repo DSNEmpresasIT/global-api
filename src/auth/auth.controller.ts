@@ -21,7 +21,8 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
     const payload = {
-      id: user.id,
+      id: user._id,
+      clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName
@@ -36,6 +37,7 @@ export class AuthController {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
       id: user._id,
+      clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName
