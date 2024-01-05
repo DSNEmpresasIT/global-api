@@ -1,16 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { MailerService } from './mailer.service';
 import { SendEmailDto } from './dto/mailer.dto';
 import { JwtService } from '@nestjs/jwt';
 
-@Controller('mailer')
+@Controller('api/mailer')
 export class MailerController {
-  private readonly service: MailerService = new MailerService();
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly service: MailerService) {}
 
-  // @UseGuards(JwtGuard)
   @Post('send-email')
   async sendEmail(@Body() body: SendEmailDto) {
-    return await this.service.sendEmail(body);
+    return await this.service.sendEmailToJauregui(body);
+  }
+
+  @Post(':clientId/send-email')
+  async sendEmalToClient(@Body() body: SendEmailDto, @Param() param) {
+    return await this.service.sendEmail(param.clientId, body)
   }
 }
