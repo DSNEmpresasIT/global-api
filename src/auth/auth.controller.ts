@@ -37,10 +37,7 @@ export class AuthController {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
       id: user._id,
-<<<<<<< HEAD
       clientName: user.clientName,
-=======
->>>>>>> 2fe2a57 (clientId on verifyToken)
       role: user.role,
       email: user.email,
       userName: user.userName
