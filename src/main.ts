@@ -14,6 +14,7 @@ async function bootstrap() {
       'https://estudiojuridicojauregui.com.ar',
       'http://estudiojuridicojauregui.com.ar',
       'https://aluplast.com.ar',
+      'http://aluplast.com.ar',
       'https://dsnempresas.com.ar',
       'http://conarg.com.ar'
     ],
