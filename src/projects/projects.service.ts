@@ -4,9 +4,9 @@ import { Project } from './schema/Project.schema';
 import { Model } from 'mongoose';
 
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
-import { ClientCredential } from 'src/user-credential/schemas/ClientCredential.schema';
+import { ClientCredential } from 'src/client-credential/schemas/ClientCredential.schema';
 import { uploadImage } from 'src/libs/cloudinary-client';
-import { Cloudinary } from 'src/user-credential/models/clientCredential.interface';
+import { Cloudinary } from 'src/client-credential/models/clientCredential.interface';
 
 @Injectable()
 export class ProjectsService {
@@ -17,27 +17,27 @@ export class ProjectsService {
     private clientsModel: Model<ClientCredential>
   ) {}
 
-  async getAllClientProjects(clientName: string) {
-    const clientProjects = await this.projectsModel.find({ clientName: clientName });
+  async getAllClientProjects(clientId: string) {
+    const clientProjects = await this.projectsModel.find({ clientId });
     return {
       projects: clientProjects
     }
   }
 
-  async createProject(clientName: string, createProjectDto: CreateProjectDto) {
+  async createProject(clientId: string, createProjectDto: CreateProjectDto) {
     try {
       const imageUrl = [];
       const clientKeys = await this.clientsModel.find({
-        clientName
-      }).select(['clientName', 'cloudinary']);
+        clientId
+      }).select(['clientId', 'cloudinary']);
       
       if (!clientKeys.length) throw new BadRequestException('Error in createProject service: client not found')
       
       if (createProjectDto.imageUrl && clientKeys) {
         await Promise.all(createProjectDto.imageUrl.map(async (image) => {
-          if (!image) return;
-          const url = await uploadImage(clientKeys[0].cloudinary, image);
+          if(!image) return;
 
+          const url = await uploadImage(clientKeys[0].cloudinary, image);
           imageUrl.push(url);
         }))
       }
@@ -45,7 +45,7 @@ export class ProjectsService {
       const project = await new this.projectsModel({
         ...createProjectDto,
         imageUrl,
-        clientName
+        clientId
       });
   
       await project.save()
@@ -58,6 +58,20 @@ export class ProjectsService {
 
   async updateProject(projectId: string, updateProjectDto: UpdateProjectDto) {
     try {
+      const clientKeys = await this.clientsModel.findOne({ clientId: updateProjectDto.clientId }).select('cloudinary')
+      let newImageUrl = [];
+
+      await Promise.all(updateProjectDto.imageUrl.map(async (currentImage, index) => {
+        if (!currentImage) return;
+
+        if (typeof currentImage === 'string') {
+          const imageUrl = await uploadImage(clientKeys.cloudinary, currentImage)
+          return newImageUrl[index] = imageUrl;
+        } 
+
+        newImageUrl[index] = currentImage
+      }))
+
       return await this.projectsModel.updateOne(
         { _id: projectId },
         { $set: { 
@@ -65,10 +79,12 @@ export class ProjectsService {
           description: updateProjectDto.description,
           project_date: updateProjectDto.project_date,
           type: updateProjectDto.type,
-          projectClient: updateProjectDto.projectClient
+          projectClient: updateProjectDto.projectClient,
+          imageUrl: newImageUrl 
         } }  
       )
     } catch (error) {
+      console.log(error)
       throw new BadGatewayException(`Error in updateProject: ###${error.message}`)      
     }
   }
@@ -88,7 +104,7 @@ export class ProjectsService {
     let clientKeys: ClientCredential 
     try {
       if (!cloudinaryKeys) {
-        clientKeys = await this.clientsModel.findOne({ clientName: updateProjectImageDto.clientName }).select('cloudinary'); 
+        clientKeys = await this.clientsModel.findOne({ clientId: updateProjectImageDto.clientId }).select('cloudinary'); 
         if (!clientKeys) throw new BadRequestException('Error in uploadProjectImage service: Client not found');
       }
 

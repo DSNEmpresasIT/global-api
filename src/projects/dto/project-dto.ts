@@ -28,17 +28,23 @@ export class CreateProjectDto {
 export class UpdateProjectImageDto {
   @IsNotEmpty()
   @IsString()
-  clientName: string;
+  clientId: string;
   @IsNotEmpty()
   @IsString()
   image: string;
+  @IsNotEmpty()
+  @IsString()
+  projectClient: string;
   @IsOptional()
   @IsNumber()
   index: number;
 }
 
 export class UpdateProjectDto {
-  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  clientId: string;
+  @IsNotEmpty()
   @IsString()
   readonly title?: string;
   @IsOptional()
@@ -52,5 +58,11 @@ export class UpdateProjectDto {
   readonly project_date?: string;
   @IsOptional()
   @IsString()
-  projectClient: string;
+  readonly projectClient?: string;
+  @IsNotEmpty()
+  @Type(() => ImageUrl || String || null)
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(4)
+  imageUrl: ImageUrl[] | string[] | null[];
 }

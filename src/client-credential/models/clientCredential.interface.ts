@@ -2,18 +2,9 @@ import { Type } from "class-transformer";
 import { IsNotEmpty, IsObject, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
 
 export class Cloudinary {
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  readonly cloud_name: string;
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  readonly api_key: string;
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  readonly api_secret: string;
+  cloud_name: string;
+  api_key: string;
+  api_secret: string;
 }
 
 export interface Facebook {
@@ -31,6 +22,7 @@ export interface Email {
   user: string;
   password: string;
   port: string;
+  email: string;
   emailJS?: EmailJs;
 }
 
