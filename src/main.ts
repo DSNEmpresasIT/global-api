@@ -13,6 +13,7 @@ async function bootstrap() {
       (process.env.LOCAL === 'true') && "http://localhost:3000",
       'https://estudiojuridicojauregui.com.ar',
       'http://estudiojuridicojauregui.com.ar',
+      'https://www.aluplast.com.ar',
       'https://aluplast.com.ar',
       'http://aluplast.com.ar',
       'https://dsnempresas.com.ar',
