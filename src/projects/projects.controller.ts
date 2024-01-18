@@ -2,6 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { RoleGuard } from 'src/auth/role/role.guard';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesTypes } from 'src/auth/roles/roles.interface';
 
 @Controller('api/projects')
 export class ProjectsController {
@@ -24,7 +27,8 @@ export class ProjectsController {
     return await this.service.getProjectData(projectId);
   }
 
-  @UseGuards(JwtGuard)
+  @Roles(RolesTypes.PREMIUM, RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Put(':projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
     return await this.service.updateProject(param.projectId, body);
@@ -36,7 +40,8 @@ export class ProjectsController {
     return await this.service.updateProjectImage(param.projectId, body)
   }
 
-  @UseGuards(JwtGuard)
+  @Roles(RolesTypes.CUSTOMER, RolesTypes.PREMIUM, RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Delete(':projectId')
   async deleteProject() {
     return {

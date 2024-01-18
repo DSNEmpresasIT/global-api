@@ -4,11 +4,16 @@ import {
   Post,
   Req,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { RegisterDto } from 'src/user/dto/register.dto';
 import { LoginDTO } from './dto/auth-dto';
+import { Roles } from './roles/roles.decorator';
+import { RolesTypes } from './roles/roles.interface';
+import { JwtGuard } from './guards/jwt.guard';
+import { RoleGuard } from './role/role.guard';
 
 @Controller('api/auth')
 export class AuthController {
@@ -16,7 +21,9 @@ export class AuthController {
       private readonly userService: UserService,
       private readonly authService: AuthService,
   ) {}
-  
+
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Post('secret_endpoint/register')
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
