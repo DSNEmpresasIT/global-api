@@ -6,6 +6,8 @@ import { Cloudinary, Email, Facebook, ReCaptchaKeys } from '../models/clientCred
 export class ClientCredential extends Document implements ClientCredential {
   @Prop({ required: true })
   clientId: string;
+  @Prop({ required: true })
+  clientName: string;
   @Prop({ required: false })
   supabaseUrl: string;
   @Prop({ required: false })

@@ -14,17 +14,20 @@ import { Roles } from './decorators/roles.decorator';
 import { RolesTypes } from './decorators/roles.interface';
 import { JwtGuard } from './guards/jwt.guard';
 import { RoleGuard } from './guards/role.guard';
+import { Model } from 'mongoose';
+import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(
       private readonly userService: UserService,
       private readonly authService: AuthService,
+      private readonly credentialModel: Model<ClientCredential>
   ) {}
 
   @Roles(RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('secret_endpoint/register')
+  @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
     const payload = {
@@ -34,6 +37,9 @@ export class AuthController {
       email: user.email,
       userName: user.userName
     };
+
+    const userCredential = await new this.credentialModel({ clientName: 'clientName', clientId: user._id })    
+    await userCredential.save();
 
     const token = await this.authService.signPayload(payload);
     return { user, token };
@@ -52,6 +58,7 @@ export class AuthController {
     const token = await this.authService.signPayload(payload);
     return { user: { id: user._id, ...user, _id: undefined }, token};
   }
+
   @Post('verify-token')
   async verifyToken(@Req() req) {
     const token = req.headers.authorization;
