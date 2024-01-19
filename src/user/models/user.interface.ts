@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { Document } from 'mongoose';
 
 export interface User extends Document {
@@ -12,4 +12,12 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @MinLength(4)
   userName: string;
+  @IsString()
+  @IsOptional()
+  @MinLength(4)
+  password?: string;
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(4)
+  email: string;
 }

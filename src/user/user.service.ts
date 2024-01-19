@@ -61,13 +61,14 @@ export class UserService {
 
   async updateUser(userId: string, body: UpdateUserDto) {
     try {
-      return this.userModel.updateOne({ _id: userId },
-        {
-          $set: {
-            userName: body.userName
-          } 
-        }
-      );
+      let newSettings: UpdateUserDto = {
+        email: body.email,
+        userName: body.userName,
+      } 
+      
+      if (body.password) newSettings.password =  await bcrypt.hash(body.password, 10);
+    
+      return this.userModel.updateOne({ _id: userId }, { $set: newSettings });
     } catch (error) {
       throw new BadGatewayException('Error in #updateUser service:', error)
     }
