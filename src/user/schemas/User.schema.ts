@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
-import { RolesTypes } from 'src/auth/roles/roles.interface';
+import { RolesTypes } from 'src/auth/decorators/roles.interface';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()

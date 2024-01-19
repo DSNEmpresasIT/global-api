@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
-import { Roles } from 'src/auth/roles/roles.decorator';
-import { RolesTypes } from 'src/auth/roles/roles.interface';
+import { RoleGuard } from 'src/auth/guards/role.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesTypes } from 'src/auth/decorators/roles.interface';
 
 @Controller('api/projects')
 export class ProjectsController {

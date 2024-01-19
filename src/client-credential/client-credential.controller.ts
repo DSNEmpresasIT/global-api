@@ -2,9 +2,9 @@ import { Body, Controller, HttpStatus, Param, Post, Put, Res, UseGuards } from '
 import { ClientCredentialService } from './client-credential.service';
 import { CreateClientCredentialDto, UpdateClientCredentialDto } from './dto/client-credentials-dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
-import { Roles } from 'src/auth/roles/roles.decorator';
-import { RolesTypes } from 'src/auth/roles/roles.interface';
+import { RoleGuard } from 'src/auth/guards/role.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesTypes } from 'src/auth/decorators/roles.interface';
 
 @Controller('api/client-credential')
 export class ClientCredentialController {
