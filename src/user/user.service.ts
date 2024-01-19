@@ -64,13 +64,51 @@ export class UserService {
       let newSettings: UpdateUserDto = {
         email: body.email,
         userName: body.userName,
-      } 
+      }
       
       if (body.password) newSettings.password =  await bcrypt.hash(body.password, 10);
     
       return this.userModel.updateOne({ _id: userId }, { $set: newSettings });
     } catch (error) {
       throw new BadGatewayException('Error in #updateUser service:', error)
+    }
+  }
+  
+  async getAllUsers() {
+    try {
+
+      return await this.userModel.find().select([
+        'email', 
+        '_id', 
+        'clientName', 
+        'userName', 
+        'role'
+      ]);
+    } catch (error) {
+      throw new BadGatewayException('Error in getAllUsers:', error);
+    }
+  }
+
+  async getUserData(userId: string) {
+    try {
+      
+      return await this.userModel.findOne({ _id: userId }).select([
+        'email', 
+        '_id', 
+        'clientName', 
+        'userName', 
+        'role'
+      ]);
+    } catch (error) {
+      throw new BadGatewayException('Error in getUserData', error)
+    }
+  }
+
+  async deleteUser(userId: string) {
+    try {
+      return this.userModel.deleteOne({ _id: userId })
+    } catch (error) {
+      throw new BadGatewayException('Error in deleteUser: ', error)
     }
   }
 }
