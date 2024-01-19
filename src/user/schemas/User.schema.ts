@@ -1,13 +1,20 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
+import { RolesTypes } from 'src/auth/decorators/roles.interface';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export const UserSchema = new mongoose.Schema({
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-  clientName: { type: String, required: true },
-  userName: { type: String, required: true }
-});
+@Schema()
+export class User extends mongoose.Document implements User {
+  @Prop({ required: true, type: String, unique: true })
+  email: string;
+  @Prop({ required: true, type: String, unique: true })
+  password: string;
+  @Prop({ required: false, default: RolesTypes.CUSTOMER, type: () => RolesTypes })
+  role: RolesTypes;
+};
+
+export const UserSchema = SchemaFactory.createForClass(User)
 
 UserSchema.pre('save', async function (next: NextFunction) {
   try {

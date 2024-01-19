@@ -1,0 +1,5 @@
+export enum RolesTypes {
+  ADMIN = 'DSN_ADMIN_ACCESS',
+  PREMIUM = 'DSN_PREMIUM_ACCESS',
+  CUSTOMER = 'DSN_CUSTOMER_ACCESS'
+}
