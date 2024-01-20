@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { ClientCredentialService } from './client-credential.service';
 import { CreateClientCredentialDto, UpdateClientCredentialDto } from './dto/client-credentials-dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -28,5 +28,12 @@ export class ClientCredentialController {
   @Put(':clientId')
   async updateClientCredential(@Body() body: UpdateClientCredentialDto, @Param() param) {
     return await this.service.updateClientCredential(param.clientId, body);
+  }
+
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
+  @Get(':clientName')
+  async getClientCredentialByName(@Param() param) {
+    return await this.service.getClientCredential(param.clientName);
   }
 }

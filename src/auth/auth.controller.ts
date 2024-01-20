@@ -16,12 +16,14 @@ import { JwtGuard } from './guards/jwt.guard';
 import { RoleGuard } from './guards/role.guard';
 import { Model } from 'mongoose';
 import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(
       private readonly userService: UserService,
       private readonly authService: AuthService,
+      @InjectModel(ClientCredential.name)
       private readonly credentialModel: Model<ClientCredential>
   ) {}
 
@@ -38,8 +40,7 @@ export class AuthController {
       userName: user.userName
     };
 
-    const userCredential = await new this.credentialModel({ clientName: 'clientName', clientId: user._id })    
-    await userCredential.save();
+    await this.credentialModel.findOneAndUpdate({ clientName: user.clientName }, {}, { upsert: true });
 
     const token = await this.authService.signPayload(payload);
     return { user, token };
