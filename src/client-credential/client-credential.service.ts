@@ -19,14 +19,10 @@ export class ClientCredentialService {
     }
   }
 
-  async getClientCredential(clientCredID: string): Promise<ClientCredential> {
+  async getClientCredential(clientName: string): Promise<ClientCredential> {
     try {
-      const ClientCredential =
-        await this.ClientCredentialModel.findById(clientCredID);
-      if (!ClientCredential) {
-        throw new NotFoundException('Client credential not found');
-      }
-      return ClientCredential;
+      
+      return await this.ClientCredentialModel.findOne({ clientName });
     } catch (error) {
       throw new NotFoundException('Unable to fetch client credential');
     }
@@ -56,12 +52,8 @@ export class ClientCredentialService {
     clientCredID: string,
   ): Promise<ClientCredential> {
     try {
-      const deletclientCred =
-        await this.ClientCredentialModel.findByIdAndDelete(clientCredID);
-      if (!deletclientCred) {
-        throw new NotFoundException('Client credential not found for deletion');
-      }
-      return deletclientCred;
+      
+      return await this.ClientCredentialModel.findByIdAndDelete(clientCredID);
     } catch (error) {
       throw new NotFoundException('Unable to delete client credential');
     }
@@ -72,6 +64,7 @@ export class ClientCredentialService {
     updateClientCredentialDto: UpdateClientCredentialDto,
   ) {
     try {
+
       return await this.ClientCredentialModel.updateOne(
         { clientId },
         updateClientCredentialDto,

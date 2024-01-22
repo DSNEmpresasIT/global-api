@@ -6,6 +6,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class User extends mongoose.Document implements User {
+  @Prop({ required: true, type: String })
+  userName: string;
+  @Prop({ required: true, type: String, unique: true })
+  clientName: string;
   @Prop({ required: true, type: String, unique: true })
   email: string;
   @Prop({ required: true, type: String, unique: true })
