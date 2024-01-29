@@ -13,6 +13,9 @@ import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { CmsModule } from './cms/cms.module';
 import { MailerModule } from './mailer/mailer.module';
+import { SitemapController } from './sitemap/sitemap.controller';
+import { SitemapService } from './sitemap/sitemap.service';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
   imports: [
@@ -30,8 +33,9 @@ import { MailerModule } from './mailer/mailer.module';
     ProjectsModule,
     CmsModule,
     MailerModule,
+    SitemapModule,
   ],
-  controllers: [AppController, SocialmediaController],
-  providers: [AppService, SocialmediaService, JwtStrategy],
+  controllers: [AppController, SocialmediaController, SitemapController],
+  providers: [AppService, SocialmediaService, JwtStrategy, SitemapService],
 })
 export class AppModule {}

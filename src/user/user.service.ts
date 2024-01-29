@@ -100,7 +100,7 @@ export class UserService {
         'role'
       ]);
     } catch (error) {
-      throw new BadGatewayException('Error in getUserData', error)
+      throw new BadGatewayException(`Error in getUserData: ${error.message}`);
     }
   }
 
