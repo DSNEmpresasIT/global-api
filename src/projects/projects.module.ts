@@ -19,7 +19,8 @@ import { ClientCredential, ClientCredentialSchema } from 'src/client-credential/
       ])
     ],
     controllers: [ProjectsController],
-    providers: [ProjectsService]
+    providers: [ProjectsService],
+    exports: [ProjectsService]
 })
 
 export class ProjectsModule {}
