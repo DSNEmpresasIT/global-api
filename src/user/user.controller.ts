@@ -33,10 +33,10 @@ export class UserController {
     return this.service.getUserData(param.userId)
   }
 
-  @Roles(RolesTypes.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
-  @Delete(':userId')
-  async deleteUser(@Param() param) {
-    return this.service.deleteUser(param.userId);
-  }
+  // @Roles(RolesTypes.ADMIN)
+  // @UseGuards(JwtGuard, RoleGuard)
+  // @Delete(':userId')
+  // async deleteUser(@Param() param) {
+  //   return this.service.deleteUser(param.userId);
+  // }
 }

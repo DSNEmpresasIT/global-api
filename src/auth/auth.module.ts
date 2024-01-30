@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
 import { ClientCredentialSchema } from 'src/client-credential/schemas/ClientCredential.schema';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   providers: [AuthService, JwtStrategy],
@@ -18,7 +19,7 @@ import { ClientCredentialSchema } from 'src/client-credential/schemas/ClientCred
         name: ClientCredential.name,
         schema: ClientCredentialSchema
       }
-    ])
+    ]),
   ],
 })
 export class AuthModule {}

@@ -16,6 +16,8 @@ import { MailerModule } from './mailer/mailer.module';
 import { SitemapController } from './sitemap/sitemap.controller';
 import { SitemapService } from './sitemap/sitemap.service';
 import { SitemapModule } from './sitemap/sitemap.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/entity/user.entity';
 
 @Module({
   imports: [
@@ -25,6 +27,17 @@ import { SitemapModule } from './sitemap/sitemap.module';
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '8h' },
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      password: process.env.DB_PASSWORD,
+      username: process.env.DB_USERNAME,
+      entities: [User],
+      database: process.env.DB_DATABASE,
+      synchronize: true,
+      logging: true,
     }),
     MongooseModule.forRoot(process.env.LOCAL === 'true' ? process.env.MONGODB_DEVELOPMENT : process.env.MONGODB_PRODUCTION),
     ClientCredentialModule,
