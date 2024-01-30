@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/user/models/user.interface';
+import { UpdateUserDto, User } from 'src/user/models/user.interface';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDTO } from 'src/auth/dto/auth-dto';
 import * as bcrypt from 'bcrypt';
@@ -56,6 +56,59 @@ export class UserService {
       return await this.userModel.findOne({ email });
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  async updateUser(userId: string, body: UpdateUserDto) {
+    try {
+      let newSettings: UpdateUserDto = {
+        email: body.email,
+        userName: body.userName,
+      }
+      
+      if (body.password) newSettings.password =  await bcrypt.hash(body.password, 10);
+    
+      return this.userModel.updateOne({ _id: userId }, { $set: newSettings });
+    } catch (error) {
+      throw new BadGatewayException('Error in #updateUser service:', error)
+    }
+  }
+  
+  async getAllUsers() {
+    try {
+
+      return await this.userModel.find().select([
+        'email', 
+        '_id', 
+        'clientName', 
+        'userName', 
+        'role'
+      ]);
+    } catch (error) {
+      throw new BadGatewayException('Error in getAllUsers:', error);
+    }
+  }
+
+  async getUserData(userId: string) {
+    try {
+      
+      return await this.userModel.findOne({ _id: userId }).select([
+        'email', 
+        '_id', 
+        'clientName', 
+        'userName', 
+        'role'
+      ]);
+    } catch (error) {
+      throw new BadGatewayException(`Error in getUserData: ${error.message}`);
+    }
+  }
+
+  async deleteUser(userId: string) {
+    try {
+      return this.userModel.deleteOne({ _id: userId })
+    } catch (error) {
+      throw new BadGatewayException('Error in deleteUser: ', error)
     }
   }
 }

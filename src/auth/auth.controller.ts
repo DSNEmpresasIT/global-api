@@ -4,20 +4,32 @@ import {
   Post,
   Req,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { RegisterDto } from 'src/user/dto/register.dto';
 import { LoginDTO } from './dto/auth-dto';
+import { Roles } from './decorators/roles.decorator';
+import { RolesTypes } from './decorators/roles.interface';
+import { JwtGuard } from './guards/jwt.guard';
+import { RoleGuard } from './guards/role.guard';
+import { Model } from 'mongoose';
+import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(
       private readonly userService: UserService,
       private readonly authService: AuthService,
+      @InjectModel(ClientCredential.name)
+      private readonly credentialModel: Model<ClientCredential>
   ) {}
-  
-  @Post('secret_endpoint/register')
+
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
+  @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
     const payload = {
@@ -27,6 +39,8 @@ export class AuthController {
       email: user.email,
       userName: user.userName
     };
+
+    await this.credentialModel.findOneAndUpdate({ clientName: user.clientName }, {}, { upsert: true });
 
     const token = await this.authService.signPayload(payload);
     return { user, token };
@@ -45,6 +59,7 @@ export class AuthController {
     const token = await this.authService.signPayload(payload);
     return { user: { id: user._id, ...user, _id: undefined }, token};
   }
+
   @Post('verify-token')
   async verifyToken(@Req() req) {
     const token = req.headers.authorization;
