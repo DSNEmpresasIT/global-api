@@ -1,14 +1,19 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCompanyCredentialDto, UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
 import { CompanyCredential } from './schemas/ClientCredential.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CompanyKeys } from './entity/company-credential.entity';
+import { Company } from 'src/company/entity/company.entity';
 
 @Injectable()
 export class CompanyCredentialService {
   constructor(
     @InjectModel(CompanyCredential.name)
     private CompanyCredentialModel: Model<CompanyCredential>,
+    @InjectRepository(CompanyKeys) private readonly companyKeysRepo: Repository<CompanyKeys>
   ) {}
   async getCompanyCredentials(): Promise<CompanyCredential[]> {
     try {
@@ -71,6 +76,22 @@ export class CompanyCredentialService {
       );
     } catch (error) {
       throw new NotFoundException('Unable to update client credential: ' + error.message);
+    }
+  }
+
+  async createEntity(company: Company, createCompanyCredentialDto: CreateCompanyCredentialDto) {
+    try {
+      const company_keys = this.companyKeysRepo.create({
+        company,
+        company_id: company.id,
+        ...createCompanyCredentialDto
+      });
+  
+      await this.companyKeysRepo.save(company_keys)
+      
+      return company_keys;
+    } catch (error) {
+      throw new BadGatewayException(`Error in ClientCredentialService.createEntity: ${error.message}`)
     }
   }
 }

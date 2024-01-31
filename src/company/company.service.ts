@@ -3,18 +3,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from './entity/company.entity';
 import { Repository } from 'typeorm';
 import { CreateCompanyDto } from './dto/company.dto';
+import { CompanyCredentialService } from 'src/company-credential/company-credential.service';
 
 @Injectable()
 export class CompanyService {
   constructor (
     @InjectRepository(Company) private readonly companyRepo: Repository<Company>,
+    private readonly companyKeys: CompanyCredentialService
   ) {}
 
   async create(CreateCompanyDto: CreateCompanyDto) {
     try {
       const company = this.companyRepo.create(CreateCompanyDto);
+      await this.companyRepo.save(company);
 
-      return await this.companyRepo.save(company);
+      const keys = await this.companyKeys.createEntity(company, {});
+      company.keys = keys
+
+      await this.companyRepo.save(company);
+
+      return company;
     } catch (error) {
 
       throw new BadGatewayException(`Error in CompanyService.create ${error.message}`)      
@@ -34,10 +42,11 @@ export class CompanyService {
               id: true,
               role: true,
               userName: true
-            }
+            },
           },
           relations: {
-            users: false
+            users,
+            keys: true
           }
         },
       )

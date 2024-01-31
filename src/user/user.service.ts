@@ -78,9 +78,10 @@ export class UserService {
   async findByPayload(payload: Payload) {
     try {
       const { email } = payload;
-      return await this.userModel.findOne({ email });
+
+      return await this.userRepo.findOne({ where: { email } });
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Error in UserService.findByPayload: ${error.message}`);
     }
   }
 
