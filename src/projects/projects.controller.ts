@@ -27,7 +27,6 @@ export class ProjectsController {
     return await this.service.getProjectData(projectId);
   }
 
-  @Roles(RolesTypes.PREMIUM, RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':projectId')
   async updateProject(@Param() param, @Body() body: UpdateProjectDto) {
