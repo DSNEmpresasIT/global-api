@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Param,
   Post,
   Req,
   UnauthorizedException,
@@ -15,7 +16,7 @@ import { RolesTypes } from './decorators/roles.interface';
 import { JwtGuard } from './guards/jwt.guard';
 import { RoleGuard } from './guards/role.guard';
 import { Model } from 'mongoose';
-import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
+import { CompanyCredential } from 'src/company-credential/models/CompanyCredential.interface';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Controller('api/auth')
@@ -23,18 +24,18 @@ export class AuthController {
   constructor(
       private readonly userService: UserService,
       private readonly authService: AuthService,
-      @InjectModel(ClientCredential.name)
-      private readonly credentialModel: Model<ClientCredential>
+      @InjectModel(CompanyCredential.name)
+      private readonly credentialModel: Model<CompanyCredential>
   ) {}
 
   // @Roles(RolesTypes.ADMIN)
   // @UseGuards(JwtGuard, RoleGuard)
-  @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
-    const user = await this.userService.create(registerDto);
+  @Post('register/:company_id')
+  async register(@Param() param,@Body() registerDto: RegisterDto) {
+    const user = await this.userService.create(param.company_id, registerDto);
     const payload = {
       id: user.id,
-      clientName: user.clientName,
+      company: user.company,
       role: user.role,
       email: user.email,
       userName: user.userName
@@ -42,6 +43,7 @@ export class AuthController {
 
     const token = await this.authService.signPayload(payload);
     return { user, token };
+    return user;
   }
 
   @Post('login')

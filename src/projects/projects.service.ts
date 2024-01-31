@@ -4,17 +4,17 @@ import { Project } from './schema/Project.schema';
 import { Model } from 'mongoose';
 
 import { CreateProjectDto, UpdateProjectDto, UpdateProjectImageDto } from './dto/project-dto';
-import { ClientCredential } from 'src/client-credential/schemas/ClientCredential.schema';
 import { uploadImage } from 'src/libs/cloudinary-client';
-import { Cloudinary } from 'src/client-credential/models/clientCredential.interface';
+import { Cloudinary } from 'src/company-credential/models/CompanyCredential.interface';
+import { CompanyCredential } from 'src/company-credential/schemas/ClientCredential.schema';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectModel(Project.name)
     private projectsModel: Model<Project>,
-    @InjectModel(ClientCredential.name)
-    private clientsModel: Model<ClientCredential>
+    @InjectModel(CompanyCredential.name)
+    private clientsModel: Model<CompanyCredential>
   ) {}
 
   async getAllClientProjects(clientId: string) {
@@ -101,7 +101,7 @@ export class ProjectsService {
   }
   
   async updateProjectImage(projectId: string, updateProjectImageDto: UpdateProjectImageDto, cloudinaryKeys: Cloudinary = undefined) {
-    let clientKeys: ClientCredential 
+    let clientKeys: CompanyCredential 
     try {
       if (!cloudinaryKeys) {
         clientKeys = await this.clientsModel.findOne({ clientId: updateProjectImageDto.clientId }).select('cloudinary'); 

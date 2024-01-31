@@ -1,39 +1,39 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
-import { ClientCredentialService } from './client-credential.service';
-import { CreateClientCredentialDto, UpdateClientCredentialDto } from './dto/client-credentials-dto';
+import { CompanyCredentialService } from './company-credential.service';
+import { CreateCompanyCredentialDto, UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesTypes } from 'src/auth/decorators/roles.interface';
 
 @Controller('api/client-credential')
-export class ClientCredentialController {
-  constructor(private service: ClientCredentialService) {}
+export class CompanyCredentialController {
+  constructor(private service: CompanyCredentialService) {}
 
   @Roles(RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
   @Post(':clientId/create')
   async createUserCred(
-    @Body() createClientCredential: CreateClientCredentialDto,
+    @Body() createCompanyCredential: CreateCompanyCredentialDto,
     @Param() param
   ) {
-    return await this.service.createClientCredential(
+    return await this.service.createCompanyCredential(
       param.clientId,      
-      createClientCredential
+      createCompanyCredential
     );
   }
 
   @Roles(RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':clientId')
-  async updateClientCredential(@Body() body: UpdateClientCredentialDto, @Param() param) {
-    return await this.service.updateClientCredential(param.clientId, body);
+  async updateCompanyCredential(@Body() body: UpdateCompanyCredentialDto, @Param() param) {
+    return await this.service.updateCompanyCredential(param.clientId, body);
   }
 
   @Roles(RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
   @Get(':clientName')
-  async getClientCredentialByName(@Param() param) {
-    return await this.service.getClientCredential(param.clientName);
+  async getCompanyCredentialByName(@Param() param) {
+    return await this.service.getCompanyCredential(param.clientName);
   }
 }

@@ -1,7 +1,8 @@
 import { RolesTypes } from "src/auth/decorators/roles.interface";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Company } from "src/company/entity/company.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,4 +16,6 @@ export class User {
   password: string;
   @Column({ enum: RolesTypes, default: RolesTypes.CUSTOMER })
   role: RolesTypes;
+  @ManyToOne(() => Company, company => company.users)
+  company: Company;
 }

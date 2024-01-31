@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { RolesTypes } from "src/auth/decorators/roles.interface";
 
 export class RegisterDto {

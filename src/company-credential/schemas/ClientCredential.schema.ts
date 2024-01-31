@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Cloudinary, Email, Facebook, ReCaptchaKeys } from '../models/clientCredential.interface';
+import { Cloudinary, Email, Facebook, ReCaptchaKeys } from '../models/CompanyCredential.interface';
 @Schema()
-export class ClientCredential extends Document implements ClientCredential {
+export class CompanyCredential extends Document implements CompanyCredential {
   @Prop({ required: true })
   clientId: string;
   @Prop({ required: true, unique: true })
@@ -24,4 +24,4 @@ export class ClientCredential extends Document implements ClientCredential {
   cloudinary: Cloudinary;
 }
 
-export const ClientCredentialSchema = SchemaFactory.createForClass(ClientCredential);
+export const CompanyCredentialSchema = SchemaFactory.createForClass(CompanyCredential);

@@ -1,15 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConnectionDto, MailDto, sendEmail } from 'src/libs/mailer-client';
 import { SendEmailDto } from './dto/mailer.dto';
-import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
+import { CompanyCredential } from 'src/company-credential/models/CompanyCredential.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class MailerService {
   constructor(
-    @InjectModel(ClientCredential.name)
-    private clientCredentialModule: Model<ClientCredential>
+    @InjectModel(CompanyCredential.name)
+    private CompanyCredentialModule: Model<CompanyCredential>
   ){}
   async sendEmailToJauregui(body: SendEmailDto) {
     const connection: ConnectionDto = {
@@ -42,7 +42,7 @@ export class MailerService {
   }
 
   async sendEmail(clientId: string, body: SendEmailDto) {
-    const clientCredentail = await this.clientCredentialModule.findOne({ clientId }).select('email')
+    const clientCredentail = await this.CompanyCredentialModule.findOne({ clientId }).select('email')
     if (!clientCredentail?.email) return new BadRequestException('Client credential not found') 
     const clientEmail = clientCredentail.email;
     

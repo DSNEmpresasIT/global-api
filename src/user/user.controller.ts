@@ -12,8 +12,8 @@ export class UserController {
     private readonly service: UserService
   ) {}
   
-  @Roles(RolesTypes.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
+  // @Roles(RolesTypes.ADMIN)
+  // @UseGuards(JwtGuard, RoleGuard)
   @Get('all')
   async getAllUsers() {
     return await this.service.getAllUsers();

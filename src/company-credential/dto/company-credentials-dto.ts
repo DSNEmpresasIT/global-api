@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsObject, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
-import { Cloudinary, Email, EmailJs, Facebook, ReCaptchaKeys } from "../models/clientCredential.interface";
+import { Cloudinary, Email, EmailJs, Facebook, ReCaptchaKeys } from "../models/CompanyCredential.interface";
 import { Type } from "class-transformer";
 
-export class CreateClientCredentialDto {
+export class CreateCompanyCredentialDto {
   @IsOptional()
   @IsString()
   @MinLength(3)
@@ -35,7 +35,7 @@ export class CreateClientCredentialDto {
   readonly cloudinary?: Cloudinary;
 }
 
-export class UpdateClientCredentialDto extends CreateClientCredentialDto {}
+export class UpdateCompanyCredentialDto extends CreateCompanyCredentialDto {}
 
 class EmailDto {
   @IsString()

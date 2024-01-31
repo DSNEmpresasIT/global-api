@@ -5,9 +5,8 @@ import { UserModule } from 'src/user/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientCredential } from 'src/client-credential/models/clientCredential.interface';
-import { ClientCredentialSchema } from 'src/client-credential/schemas/ClientCredential.schema';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { CompanyCredential } from 'src/company-credential/models/CompanyCredential.interface';
+import { CompanyCredentialSchema } from 'src/company-credential/schemas/ClientCredential.schema';
 
 @Module({
   providers: [AuthService, JwtStrategy],
@@ -16,8 +15,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UserModule,
     MongooseModule.forFeature([
       {
-        name: ClientCredential.name,
-        schema: ClientCredentialSchema
+        name: CompanyCredential.name,
+        schema: CompanyCredentialSchema
       }
     ]),
   ],

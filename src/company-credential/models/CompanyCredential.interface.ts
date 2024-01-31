@@ -33,7 +33,7 @@ export interface EmailJs {
 }
 
 
-export class ClientCredential {
+export class CompanyCredential {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)

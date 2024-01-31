@@ -7,7 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientCredentialModule } from './client-credential/client-credential.module';
+import { CompanyCredentialModule } from './company-credential/company-credential.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
@@ -17,7 +17,7 @@ import { SitemapController } from './sitemap/sitemap.controller';
 import { SitemapService } from './sitemap/sitemap.service';
 import { SitemapModule } from './sitemap/sitemap.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/entity/user.entity';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -34,19 +34,20 @@ import { User } from './user/entity/user.entity';
       port: +process.env.DB_PORT,
       password: process.env.DB_PASSWORD,
       username: process.env.DB_USERNAME,
-      entities: [User],
+      entities: [__dirname+'/**/*.entity.{ts,js}'],
       database: process.env.DB_DATABASE,
       synchronize: true,
       logging: true,
     }),
     MongooseModule.forRoot(process.env.LOCAL === 'true' ? process.env.MONGODB_DEVELOPMENT : process.env.MONGODB_PRODUCTION),
-    ClientCredentialModule,
+    CompanyCredentialModule,
     UserModule,
     AuthModule,
     ProjectsModule,
     CmsModule,
     MailerModule,
     SitemapModule,
+    CompanyModule,
   ],
   controllers: [AppController, SocialmediaController, SitemapController],
   providers: [AppService, SocialmediaService, JwtStrategy, SitemapService],

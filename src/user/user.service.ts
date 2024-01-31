@@ -1,25 +1,40 @@
 import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { InjectModel } from '@nestjs/mongoose';
+import { Repository } from 'typeorm';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+
 import { UpdateUserDto, User } from 'src/user/models/user.interface';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDTO } from 'src/auth/dto/auth-dto';
-import * as bcrypt from 'bcrypt';
 import { Payload } from 'src/auth/types/payload.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User as UserEntity } from './entity/user.entity';
-import { Repository } from 'typeorm';
+import { User as Userentity } from './entity/user.entity';
+import { CompanyService } from 'src/company/company.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
-    @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(Userentity) private readonly userRepo: Repository<Userentity>,
+    private readonly companyService: CompanyService,
   ) {}
 
-  async create(RegisterDto: RegisterDto) {
+  async create(company_id: number, RegisterDto: RegisterDto) {
     try {
-      const createdUser = this.userRepo.create(RegisterDto);
+      const company =  await this.companyService.getCompanyById(company_id);
+      
+      if (!company) {
+        throw new BadRequestException('Does not exists a company with that ID');
+      }
+
+      const passwordHashed = await bcrypt.hash(RegisterDto.password, 10);
+      const createdUser = this.userRepo.create({ 
+        ...RegisterDto,
+        password: passwordHashed, 
+        company
+      });
+
       await this.userRepo.save(createdUser);
       
       return this.sanitizeUser(createdUser);
@@ -53,7 +68,7 @@ export class UserService {
   }
 
   // return user object without password
-  sanitizeUser(user: UserEntity) {
+  sanitizeUser(user: Userentity) {
     return {
       ...user,
       password: undefined
@@ -86,14 +101,18 @@ export class UserService {
   
   async getAllUsers() {
     try {
-
-      return await this.userModel.find().select([
-        'email', 
-        '_id', 
-        'clientName', 
-        'userName', 
-        'role'
-      ]);
+      return await this.userRepo.find({
+        relations: ['company'],
+        select: {
+          company: {
+            id: true,
+            company_name: true
+          },
+          userName: true,
+          role: true,
+          email: true
+        }
+      })
     } catch (error) {
       throw new BadGatewayException('Error in getAllUsers:', error);
     }
