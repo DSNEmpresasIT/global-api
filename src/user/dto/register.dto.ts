@@ -1,9 +1,10 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { RolesTypes } from "src/auth/decorators/roles.interface";
 
 export class RegisterDto {
   @IsOptional()
   @IsString()
-  role: string;
+  role: RolesTypes;
   @IsNotEmpty()
   @IsString()
   email: string;

@@ -6,22 +6,25 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDTO } from 'src/auth/dto/auth-dto';
 import * as bcrypt from 'bcrypt';
 import { Payload } from 'src/auth/types/payload.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User as UserEntity } from './entity/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(
+    @InjectModel('User') private userModel: Model<User>,
+    @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
+  ) {}
 
   async create(RegisterDto: RegisterDto) {
     try {
-      const { email } = RegisterDto;
-      const user = await this.userModel.findOne({ email });
-      if (user) {
-        throw new BadRequestException('User already exists');
-      }
-      const createdUser = new this.userModel(RegisterDto);
-      await createdUser.save();
+      const createdUser = this.userRepo.create(RegisterDto);
+      await this.userRepo.save(createdUser);
+      
       return this.sanitizeUser(createdUser);
     } catch (error) {
+      console.log(error)
       throw new BadRequestException(error.message);
     }
   }
@@ -29,10 +32,16 @@ export class UserService {
   async findByLogin(UserDTO: LoginDTO) {
     try {
       const { email, password } = UserDTO;
-      const user = await this.userModel.findOne({ email });
+      const user = await this.userRepo.findOne({ 
+        where: {
+          email
+        }
+       });
+
       if (!user) {
         throw new BadRequestException('User does not exist');
       }
+
       if (await bcrypt.compare(password, user.password)) {
         return this.sanitizeUser(user);
       } else {
@@ -44,10 +53,11 @@ export class UserService {
   }
 
   // return user object without password
-  sanitizeUser(user: User) {
-    const sanitized = user.toObject();
-    delete sanitized['password'];
-    return sanitized;
+  sanitizeUser(user: UserEntity) {
+    return {
+      ...user,
+      password: undefined
+    };
   }
 
   async findByPayload(payload: Payload) {
@@ -104,12 +114,11 @@ export class UserService {
     }
   }
 
-  // async deleteUserData(userId: string) {
+  // async deleteUser(userId: string) {
   //   try {
-      
   //     return await this.userModel.deleteOne({ _id: userId })
   //   } catch (error) {
-  //     throw new BadGatewayException(`Error in UserServices.deleteUser: ${error.message}`)
+  //     throw new BadGatewayException('Error in deleteUser: ', error)
   //   }
   // }
 }
