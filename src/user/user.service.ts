@@ -104,11 +104,12 @@ export class UserService {
     }
   }
 
-  async deleteUser(userId: string) {
-    try {
-      return this.userModel.deleteOne({ _id: userId })
-    } catch (error) {
-      throw new BadGatewayException('Error in deleteUser: ', error)
-    }
-  }
+  // async deleteUserData(userId: string) {
+  //   try {
+      
+  //     return await this.userModel.deleteOne({ _id: userId })
+  //   } catch (error) {
+  //     throw new BadGatewayException(`Error in UserServices.deleteUser: ${error.message}`)
+  //   }
+  // }
 }
