@@ -48,14 +48,14 @@ export class AuthController {
   async login(@Body() loginDTO: LoginDTO) {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
-      id: user.id,
+      id: user._id,
       clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName
     };
     const token = await this.authService.signPayload(payload);
-    return { user: { ...user, id: undefined }, token};
+    return { user: { ...user, id: user._id, _id: undefined }, token};
   }
 
   @Post('verify-token')
