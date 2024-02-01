@@ -1,7 +1,7 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('recaptcha_key')
-export class ReCaptchaKey {
+export class ReCaptchaKey extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'varchar', default: '' })

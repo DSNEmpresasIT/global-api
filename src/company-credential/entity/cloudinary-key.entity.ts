@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('cloudinary_keys')
-export class CloudinaryKeys {
+export class CloudinaryKeys extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'varchar', nullable: true })

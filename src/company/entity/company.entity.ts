@@ -1,9 +1,9 @@
 import { CompanyKeys } from "src/company-credential/entity/company-credential.entity";
 import { User } from "src/user/entity/user.entity";
-import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Company {
+export class Company extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'varchar' })

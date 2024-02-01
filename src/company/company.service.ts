@@ -2,7 +2,7 @@ import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/co
 import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from './entity/company.entity';
 import { Repository } from 'typeorm';
-import { CreateCompanyDto } from './dto/company.dto';
+import { CreateCompanyDto, UpdateCompanyDto } from './dto/company.dto';
 import { CompanyCredentialService } from 'src/company-credential/company-credential.service';
 
 @Injectable()
@@ -58,6 +58,28 @@ export class CompanyService {
       return company;
     } catch (error) {
       throw new BadGatewayException(`Error in CompanyService.getCompanyById: ${error.message}`)
+    }
+  }
+
+  async getAllCompanies() {
+    try {
+      
+      return await this.companyRepo.find()
+    } catch (error) {
+      throw new BadGatewayException(`Error in CompanyServices.getAllCompanies: ${error.message}`)
+    }
+  }
+
+  async updateCompany(companyId: number, updateCompanyDto: UpdateCompanyDto) {
+    try {
+      return await this.companyRepo
+        .createQueryBuilder()
+        .update(Company)
+        .set({ ...updateCompanyDto })
+        .where(' id = :id ',{ id: companyId })
+        .execute()
+    } catch (error) {
+      throw new BadGatewayException(`Error in CompanyService.updateCompany: ${error.message}`)
     }
   }
 }

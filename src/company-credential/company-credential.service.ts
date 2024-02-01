@@ -7,27 +7,41 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompanyKeys } from './entity/company-credential.entity';
 import { Company } from 'src/company/entity/company.entity';
+import { GetCompanyKeysQuery } from './models/CompanyCredential.interface';
+import { EmailKeys } from './entity/email-keys.entity';
+import { CloudinaryKeys } from './entity/cloudinary-key.entity';
+import { ReCaptchaKey } from './entity/recaptcha-key.entity';
 
 @Injectable()
 export class CompanyCredentialService {
   constructor(
     @InjectModel(CompanyCredential.name)
     private CompanyCredentialModel: Model<CompanyCredential>,
-    @InjectRepository(CompanyKeys) private readonly companyKeysRepo: Repository<CompanyKeys>
   ) {}
-  async getCompanyCredentials(): Promise<CompanyCredential[]> {
+  async getCompanyCredentials(): Promise<CompanyKeys[]> {
     try {
-      const CompanyCredentials = await this.CompanyCredentialModel.find();
-      return CompanyCredentials;
+      return await CompanyKeys.find({
+        relations: {
+          email_keys: true,
+          recaptcha_keys: true,
+          cloudinary_keys: true,
+        },
+      });
     } catch (error) {
       throw new NotFoundException('Unable to fetch client credentials');
     }
   }
 
-  async getCompanyCredential(clientName: string): Promise<CompanyCredential> {
+  async getCompanyCredential(companyId: number, relations: GetCompanyKeysQuery): Promise<CompanyKeys> {
     try {
-      
-      return await this.CompanyCredentialModel.findOne({ clientName });
+      return await CompanyKeys.findOne({ 
+        where: { id: companyId },
+        relations: {
+          cloudinary_keys: relations.cloudinaryKey,
+          email_keys: relations.emailKeys,
+          recaptcha_keys: relations.recaptchaKeys
+        }
+      });
     } catch (error) {
       throw new NotFoundException('Unable to fetch client credential');
     }
@@ -65,29 +79,44 @@ export class CompanyCredentialService {
   }
 
   async updateCompanyCredential(
-    clientId: string,
+    company_id: number,
     updateCompanyCredentialDto: UpdateCompanyCredentialDto,
   ) {
     try {
+      const companyKeys = await CompanyKeys.findOne({
+        where: { company_id },
+        relations: {
+          cloudinary_keys: true,
+          email_keys: true,
+          recaptcha_keys: true
+        }
+      })
 
-      return await this.CompanyCredentialModel.updateOne(
-        { clientId },
-        updateCompanyCredentialDto,
-      );
+      if(updateCompanyCredentialDto.email) {
+        const newEmail = updateCompanyCredentialDto.email; 
+        companyKeys.email_keys.email = newEmail.email;
+        companyKeys.email_keys.host = newEmail.host;
+        companyKeys.email_keys.user = newEmail.user;
+        companyKeys.email_keys.port = +newEmail.port;
+        companyKeys.email_keys.password = newEmail.password;
+      }
+      
+      return companyKeys.save();
     } catch (error) {
-      throw new NotFoundException('Unable to update client credential: ' + error.message);
+      throw new NotFoundException(`Unable to update client credential: ${error.message}`);
     }
   }
 
   async createEntity(company: Company, createCompanyCredentialDto: CreateCompanyCredentialDto) {
     try {
-      const company_keys = this.companyKeysRepo.create({
-        company,
+      const company_keys = await CompanyKeys.create({
         company_id: company.id,
         ...createCompanyCredentialDto
-      });
-  
-      await this.companyKeysRepo.save(company_keys)
+      }).save();
+
+      await EmailKeys.create({}).save()
+      await CloudinaryKeys.create({}).save()
+      await ReCaptchaKey.create({}).save()
       
       return company_keys;
     } catch (error) {

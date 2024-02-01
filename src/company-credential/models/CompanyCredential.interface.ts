@@ -21,7 +21,7 @@ export interface Email {
   host: string;
   user: string;
   password: string;
-  port: string;
+  port: number;
   email: string;
   emailJS?: EmailJs;
 }
@@ -67,4 +67,10 @@ export class CompanyCredential {
   @IsOptional()
   @IsObject()
   readonly cloudinary?: Cloudinary;
+}
+
+export class GetCompanyKeysQuery {
+  cloudinaryKey?: boolean;
+  emailKeys?: boolean;
+  recaptchaKeys?: boolean;
 }

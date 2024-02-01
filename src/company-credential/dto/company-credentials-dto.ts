@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsObject, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
 import { Cloudinary, Email, EmailJs, Facebook, ReCaptchaKeys } from "../models/CompanyCredential.interface";
 import { Type } from "class-transformer";
 
@@ -47,13 +47,12 @@ class EmailDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  port: string;
+  port: number;
   @IsString()
   @IsNotEmpty()
   email: string;
-  emailJS?: EmailJs;
 }
 
 class CloudinaryDto {

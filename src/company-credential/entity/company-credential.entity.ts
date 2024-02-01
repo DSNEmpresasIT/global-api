@@ -1,11 +1,11 @@
-import { Column, Entity, JoinColumn, JoinTable, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, JoinTable, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ReCaptchaKey } from "./recaptcha-key.entity";
 import { EmailKeys } from "./email-keys.entity";
 import { CloudinaryKeys } from "./cloudinary-key.entity";
 import { Company } from "src/company/entity/company.entity";
 
 @Entity('company_keys')
-export class CompanyKeys {
+export class CompanyKeys extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'int' })
@@ -17,13 +17,13 @@ export class CompanyKeys {
   supabaseUrl: string;
   @Column({ type: 'varchar', nullable: true })
   instagram_key: string;
-  @OneToOne(() => ReCaptchaKey, { nullable: true })
+  @OneToOne(() => ReCaptchaKey, { cascade: true })
   @JoinColumn()
   recaptcha_keys: ReCaptchaKey;
-  @OneToOne(() => EmailKeys, { nullable: true })
+  @OneToOne(() => EmailKeys, { cascade: true })
   @JoinColumn()
   email_keys: EmailKeys;
-  @OneToOne(() => CloudinaryKeys, { nullable: true })
+  @OneToOne(() => CloudinaryKeys, { cascade: true })
   @JoinColumn()
   cloudinary_keys: CloudinaryKeys;
 }

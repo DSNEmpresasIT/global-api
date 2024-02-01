@@ -5,3 +5,5 @@ export class CreateCompanyDto {
   @IsString()
   company_name: string;
 }
+
+export class UpdateCompanyDto extends CreateCompanyDto {}
