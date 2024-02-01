@@ -1,7 +1,7 @@
 import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UpdateUserDto, User } from 'src/user/models/user.interface';
+import { UpdateUserDto } from 'src/user/models/user.interface';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDTO } from 'src/auth/dto/auth-dto';
 import * as bcrypt from 'bcrypt';
@@ -9,11 +9,12 @@ import { Payload } from 'src/auth/types/payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User as UserEntity } from './entity/user.entity';
 import { Repository } from 'typeorm';
+import { User } from './schemas/User.schema';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel('User') private userModel: Model<User>,
+    @InjectModel(User.name) private userModel: Model<User>,
     @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
   ) {}
 
@@ -22,7 +23,7 @@ export class UserService {
       const createdUser = this.userRepo.create(RegisterDto);
       await this.userRepo.save(createdUser);
       
-      return this.sanitizeUser(createdUser);
+      // return this.sanitizeUser(createdUser);
     } catch (error) {
       console.log(error)
       throw new BadRequestException(error.message);
@@ -31,29 +32,33 @@ export class UserService {
 
   async findByLogin(UserDTO: LoginDTO) {
     try {
-      const { email, password } = UserDTO;
-      const user = await this.userRepo.findOne({ 
-        where: {
-          email
-        }
-       });
+      // const { email, password } = UserDTO;
+      // const user = await this.userRepo.findOne({ 
+      //   where: {
+      //     email
+      //   }
+      //  });
+      const user = await this.userModel.findOne({  
+        email: UserDTO.email
+      }).lean()
 
       if (!user) {
         throw new BadRequestException('User does not exist');
       }
 
-      if (await bcrypt.compare(password, user.password)) {
+      if (await bcrypt.compare(UserDTO.password, user.password)) {
         return this.sanitizeUser(user);
       } else {
         throw new BadRequestException('Invalid credentials');
       }
+
     } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
 
   // return user object without password
-  sanitizeUser(user: UserEntity) {
+  sanitizeUser(user: User) {
     return {
       ...user,
       password: undefined

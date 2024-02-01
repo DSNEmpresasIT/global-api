@@ -32,16 +32,16 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(registerDto);
-    const payload = {
-      id: user.id,
-      clientName: user.clientName,
-      role: user.role,
-      email: user.email,
-      userName: user.userName
-    };
+    // const payload = {
+    //   id: user.id,
+    //   clientName: user.clientName,
+    //   role: user.role,
+    //   email: user.email,
+    //   userName: user.userName
+    // };
 
-    const token = await this.authService.signPayload(payload);
-    return { user, token };
+    // const token = await this.authService.signPayload(payload);
+    // return { user, token };
   }
 
   @Post('login')
