@@ -57,7 +57,7 @@ export class AuthController {
       userName: user.userName
     };
     const token = await this.authService.signPayload(payload);
-    return { user: { ...user, id: undefined }, token};
+    return { user: { ...user}, token};
   }
 
   @Post('verify-token')

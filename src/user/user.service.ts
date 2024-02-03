@@ -46,22 +46,26 @@ export class UserService {
 
   async findByLogin(UserDTO: LoginDTO) {
     try {
-      const { email, password } = UserDTO;
-      const user = await this.userRepo.findOne({ 
-        where: {
-          email
-        }
-       });
+      // const { email, password } = UserDTO;
+      // const user = await this.userRepo.findOne({ 
+      //   where: {
+      //     email
+      //   }
+      //  });
+      const user = await Userentity.findOne({  
+        where: { email: UserDTO.email }
+      })
 
       if (!user) {
         throw new BadRequestException('User does not exist');
       }
 
-      if (await bcrypt.compare(password, user.password)) {
+      if (await bcrypt.compare(UserDTO.password, user.password)) {
         return this.sanitizeUser(user);
       } else {
         throw new BadRequestException('Invalid credentials');
       }
+
     } catch (error) {
       throw new BadRequestException(error.message);
     }
