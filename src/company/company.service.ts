@@ -15,17 +15,16 @@ export class CompanyService {
   async create(CreateCompanyDto: CreateCompanyDto) {
     try {
       const company = this.companyRepo.create(CreateCompanyDto);
+      
+      const keys = await this.companyKeys.createEntity({});
+      
+      company.keys = keys;
       await this.companyRepo.save(company);
-
-      const keys = await this.companyKeys.createEntity(company, {});
-      company.keys = keys
-
-      await this.companyRepo.save(company);
-
+      
       return company;
     } catch (error) {
 
-      throw new BadGatewayException(`Error in CompanyService.create ${error.message}`)      
+      throw new BadGatewayException(`Error in CompanyService.create ${error.message}`)
     }
   }
 
@@ -46,9 +45,13 @@ export class CompanyService {
           },
           relations: {
             users,
-            keys: true
+            keys: {
+              cloudinary_keys: true,
+              recaptcha_keys: true,
+              email_keys: true
+            }
           }
-        },
+        }
       )
 
       if(!company) {
@@ -83,3 +86,4 @@ export class CompanyService {
     }
   }
 }
+ 

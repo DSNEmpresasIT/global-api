@@ -8,13 +8,12 @@ import { Company } from "src/company/entity/company.entity";
 export class CompanyKeys extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'int' })
-  company_id: number;
-  @OneToOne(() => Company, company => company.keys)
-  @JoinColumn()
-  company: Company;
   @Column({ type: 'varchar', nullable: true })
   supabaseUrl: string;
+  @Column({ type: 'varchar', nullable: true })
+  supabaseKey: string;
+  @OneToOne(() => Company, company => company.keys)
+  company: Company;
   @Column({ type: 'varchar', nullable: true })
   instagram_key: string;
   @OneToOne(() => ReCaptchaKey, { cascade: true })

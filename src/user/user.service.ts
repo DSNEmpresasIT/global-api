@@ -46,12 +46,6 @@ export class UserService {
 
   async findByLogin(UserDTO: LoginDTO) {
     try {
-      // const { email, password } = UserDTO;
-      // const user = await this.userRepo.findOne({ 
-      //   where: {
-      //     email
-      //   }
-      //  });
       const user = await Userentity.findOne({  
         where: { email: UserDTO.email }
       })
@@ -61,11 +55,12 @@ export class UserService {
       }
 
       if (await bcrypt.compare(UserDTO.password, user.password)) {
+
         return this.sanitizeUser(user);
       } else {
+        
         throw new BadRequestException('Invalid credentials');
       }
-
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -89,16 +84,21 @@ export class UserService {
     }
   }
 
-  async updateUser(userId: string, body: UpdateUserDto) {
+  async updateUser(userId: number, body: UpdateUserDto) {
     try {
+      const user = Userentity.findBy({ id: userId })
+
+      return console.log(user)
       let newSettings: UpdateUserDto = {
         email: body.email,
         userName: body.userName,
       }
       
-      if (body.password) newSettings.password =  await bcrypt.hash(body.password, 10);
+      if (body.password) {
+        newSettings.password =  await bcrypt.hash(body.password, 10)
+      }
     
-      return this.userModel.updateOne({ _id: userId }, { $set: newSettings });
+      return 
     } catch (error) {
       throw new BadGatewayException('Error in #updateUser service:', error)
     }

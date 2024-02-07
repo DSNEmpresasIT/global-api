@@ -15,10 +15,4 @@ export class EmailKeys extends BaseEntity {
   email: string;
   @Column({ type: 'varchar', nullable: true })
   password: string;
-  @OneToOne(() => CompanyKeys, { 
-  nullable: true })
-  @JoinColumn()
-  keys: CompanyKeys;
-  @Column()
-  keysId: number;
 }

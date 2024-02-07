@@ -11,10 +11,6 @@ export class CreateCompanyCredentialDto {
   @IsString()
   @MinLength(3)
   readonly supabaseKey?: string;
-  @ValidateNested({ each: true })
-  @IsOptional()
-  @IsObject()
-  readonly facebook?: Facebook;
   @IsOptional()
   @IsString()
   @MinLength(3)

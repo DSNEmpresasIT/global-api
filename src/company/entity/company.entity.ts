@@ -11,7 +11,7 @@ export class Company extends BaseEntity {
   @OneToMany(() => User, user => user.company, { nullable: true })
   @JoinTable()
   users: User[];
-  @OneToOne(() => CompanyKeys, keys => keys.company , { nullable: true })
+  @OneToOne(() => CompanyKeys, keys => keys.company)
   @JoinColumn()
   keys: CompanyKeys;
 }

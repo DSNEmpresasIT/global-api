@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CompanyKeys } from "./company-credential.entity";
 
 @Entity('cloudinary_keys')
 export class CloudinaryKeys extends BaseEntity {

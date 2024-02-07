@@ -1,27 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
 import { CompanyCredentialService } from './company-credential.service';
-import { CreateCompanyCredentialDto, UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RoleGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesTypes } from 'src/auth/decorators/roles.interface';
+import { UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
 import { GetCompanyKeysQuery } from './models/CompanyCredential.interface';
 
 @Controller('api/client-credential')
 export class CompanyCredentialController {
   constructor(private service: CompanyCredentialService) {}
 
-  @Roles(RolesTypes.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
-  @Post(':clientId/create')
-  async createUserCred(
-    @Body() createCompanyCredential: CreateCompanyCredentialDto,
-    @Param() param
-  ) {
-    return await this.service.createCompanyCredential(
-      param.clientId,      
-      createCompanyCredential
-    );
+  @Get('all')
+  async getAllCompanyCredentials() {
+    return await this.service.getAllCompanyCredentials();
   }
 
   // @Roles(RolesTypes.ADMIN)
@@ -31,8 +19,8 @@ export class CompanyCredentialController {
     return await this.service.updateCompanyCredential(param.clientId, body);
   }
 
-  @Roles(RolesTypes.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
+  // @Roles(RolesTypes.ADMIN)
+  // @UseGuards(JwtGuard, RoleGuard)
   @Get(':companyId')
   async getCompanyCredentialByName(@Param() param, @Query() querys: GetCompanyKeysQuery) {
     
