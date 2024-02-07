@@ -12,7 +12,7 @@ export class SitemapController {
     private readonly service: SitemapService,
   ) {}
 
-  @Roles(RolesTypes.ADMIN)
+  // @Roles(RolesTypes.ADMIN)
   @UseGuards(JwtGuard, RoleGuard)
   @Get(':clientId')
   async getSitemap(@Param() param, @Query() query: QueryParamsGetSitemap, @Body() body: GetSiteMapDto) {
