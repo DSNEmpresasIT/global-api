@@ -32,7 +32,6 @@ export class UserService {
       const createdUser = this.userRepo.create({ 
         ...RegisterDto,
         password: passwordHashed, 
-        clientName: company.company_name,
         company,
         role: RegisterDto.role ?? undefined
       });
@@ -95,7 +94,6 @@ export class UserService {
       }
       
       user.email = body.email;
-      user.clientName = body.clientName;
       user.userName = body.userName;
 
       if (body.password) {

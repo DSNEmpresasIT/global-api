@@ -18,6 +18,7 @@ import { SitemapService } from './sitemap/sitemap.service';
 import { SitemapModule } from './sitemap/sitemap.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompanyModule } from './company/company.module';
+import { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
@@ -28,17 +29,7 @@ import { CompanyModule } from './company/company.module';
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '8h' },
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      password: process.env.DB_PASSWORD,
-      username: process.env.DB_USERNAME,
-      entities: [__dirname+'/**/*.entity.{ts,js}'],
-      database: process.env.DB_DATABASE,
-      synchronize: true,
-      logging: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     MongooseModule.forRoot(process.env.LOCAL === 'true' ? process.env.MONGODB_DEVELOPMENT : process.env.MONGODB_PRODUCTION),
     CompanyCredentialModule,
     UserModule,

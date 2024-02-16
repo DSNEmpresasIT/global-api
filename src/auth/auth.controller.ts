@@ -51,7 +51,6 @@ export class AuthController {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
       id: user.id,
-      clientName: user.clientName,
       role: user.role,
       email: user.email,
       userName: user.userName

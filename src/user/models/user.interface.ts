@@ -15,10 +15,6 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   @MinLength(4)
-  clientName: string;
-  @IsString()
-  @IsOptional()
-  @MinLength(4)
   password?: string;
   @IsString()
   @IsOptional()

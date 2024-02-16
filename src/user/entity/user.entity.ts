@@ -8,8 +8,6 @@ export class User extends BaseEntity {
   id: number;
   @Column({ type: 'varchar'  })
   userName: string;
-  @Column({ type: 'varchar' })
-  clientName: string;
   @Column({ type: 'varchar', unique: true })
   email: string;
   @Column({ type: 'varchar' })
