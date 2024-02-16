@@ -16,7 +16,7 @@ export class CompanyService {
     try {
       const company = this.companyRepo.create(CreateCompanyDto);
       
-      const keys = await this.companyKeys.createEntity({});
+      const keys = await this.companyKeys.createCompanyKeysEntity({});
       
       company.keys = keys;
       await this.companyRepo.save(company);

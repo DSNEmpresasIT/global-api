@@ -32,7 +32,9 @@ export class UserService {
       const createdUser = this.userRepo.create({ 
         ...RegisterDto,
         password: passwordHashed, 
-        company
+        clientName: company.company_name,
+        company,
+        role: RegisterDto.role ?? undefined
       });
 
       await this.userRepo.save(createdUser);
@@ -86,21 +88,27 @@ export class UserService {
 
   async updateUser(userId: number, body: UpdateUserDto) {
     try {
-      const user = Userentity.findBy({ id: userId })
+      const user = await Userentity.findOne({ where: { id: userId } })
 
-      return console.log(user)
-      let newSettings: UpdateUserDto = {
-        email: body.email,
-        userName: body.userName,
+      if (!user) {
+        throw new BadRequestException('User does not exists')
       }
       
+      user.email = body.email;
+      user.clientName = body.clientName;
+      user.userName = body.userName;
+
       if (body.password) {
-        newSettings.password =  await bcrypt.hash(body.password, 10)
+        user.password =  await bcrypt.hash(body.password, 10)
       }
     
-      return 
+      await user.save()
+      return {
+        ...user,
+        password: undefined
+      }
     } catch (error) {
-      throw new BadGatewayException('Error in #updateUser service:', error)
+      throw new BadGatewayException(`Error in #updateUser service: ${error}`)
     }
   }
   
@@ -119,6 +127,7 @@ export class UserService {
         }
       })
     } catch (error) {
+      console.log(error)
       throw new BadGatewayException('Error in getAllUsers:', error);
     }
   }

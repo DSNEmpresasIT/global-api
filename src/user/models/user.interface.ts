@@ -9,15 +9,19 @@ export interface User extends Document {
 
 export class UpdateUserDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(4)
   userName: string;
   @IsString()
   @IsOptional()
   @MinLength(4)
+  clientName: string;
+  @IsString()
+  @IsOptional()
+  @MinLength(4)
   password?: string;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(4)
   email: string;
 }

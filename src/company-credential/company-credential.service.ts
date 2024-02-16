@@ -3,10 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCompanyCredentialDto, UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
 import { CompanyCredential } from './schemas/ClientCredential.schema';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+
 import { CompanyKeys } from './entity/company-credential.entity';
-import { Company } from 'src/company/entity/company.entity';
 import { GetCompanyKeysQuery } from './models/CompanyCredential.interface';
 import { EmailKeys } from './entity/email-keys.entity';
 import { CloudinaryKeys } from './entity/cloudinary-key.entity';
@@ -15,8 +13,6 @@ import { ReCaptchaKey } from './entity/recaptcha-key.entity';
 @Injectable()
 export class CompanyCredentialService {
   constructor(
-    @InjectModel(CompanyCredential.name)
-    private CompanyCredentialModel: Model<CompanyCredential>,
   ) {}
   async getAllCompanyCredentials(): Promise<CompanyKeys[]> {
     try {
@@ -99,7 +95,7 @@ export class CompanyCredentialService {
     }
   }
 
-  async createEntity(createCompanyCredentialDto: CreateCompanyCredentialDto) {
+  async createCompanyKeysEntity(createCompanyCredentialDto: CreateCompanyCredentialDto) {
     try {
       const companyKeys = await CompanyKeys.create({
         ...createCompanyCredentialDto
