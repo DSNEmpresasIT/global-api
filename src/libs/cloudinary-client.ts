@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { Cloudinary } from 'src/client-credential/models/clientCredential.interface';
+import { Cloudinary } from 'src/company-credential/models/CompanyCredential.interface';
 import { BadGatewayException, BadRequestException } from '@nestjs/common';
 
 
