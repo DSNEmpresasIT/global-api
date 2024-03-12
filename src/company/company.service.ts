@@ -12,7 +12,7 @@ export class CompanyService {
     private readonly companyKeys: CompanyCredentialService
   ) {}
 
-  async create(CreateCompanyDto: CreateCompanyDto) {
+  async createCompany(CreateCompanyDto: CreateCompanyDto) {
     try {
       const company = this.companyRepo.create(CreateCompanyDto);
       
@@ -40,8 +40,12 @@ export class CompanyService {
               email: true,
               id: true,
               role: true,
-              userName: true
+              user_name: true
             },
+            projects: {
+              id: true,
+              title: true
+            }
           },
           relations: {
             users,
@@ -49,8 +53,10 @@ export class CompanyService {
               cloudinary_keys: true,
               recaptcha_keys: true,
               email_keys: true
-            }
-          }
+            },
+            projects: true,
+            project_types: true
+          },
         }
       )
 

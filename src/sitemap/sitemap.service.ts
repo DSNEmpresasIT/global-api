@@ -9,14 +9,14 @@ export class SitemapService {
     private readonly projectsService: ProjectsService,
     private readonly usersService: UserService,
   ) {}
-  async getSitemap(clientId: string, querys: QueryParamsGetSitemap, body: GetSiteMapDto) {
+  async getSitemap(clientId: number, querys: QueryParamsGetSitemap, body: GetSiteMapDto) {
     try {
       await this.usersService.getUserData(clientId);
       const date = new Date();
       let projects;
 
       if (querys.projects) {
-        projects = await this.projectsService.getAllClientProjects(clientId)
+        projects = await this.projectsService.getAllCompanyProjects(clientId)
       }
 
       const sitemap = `

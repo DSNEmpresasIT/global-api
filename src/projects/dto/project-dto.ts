@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBase64, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MaxLength, MinLength, Validate, ValidateNested } from "class-validator";
 import { ImageUrl } from "../model/project.interface";
+import { ProjectType } from "src/cms/entity/project_types.entity";
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -10,11 +11,11 @@ export class CreateProjectDto {
   @IsString()
   description?: string;
   @IsOptional()
-  @IsString()
-  type: string;
+  @IsNumber()
+  project_type_id: number;
   @IsOptional()
   @IsString()
-  projectClient?: string;
+  project_client?: string;
   @IsOptional()
   @IsString()
   project_date?: string;
@@ -22,19 +23,19 @@ export class CreateProjectDto {
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(4)
-  imageUrl?: string[];
+  images?: string[];
 }
 
 export class UpdateProjectImageDto {
   @IsNotEmpty()
-  @IsString()
-  clientId: string;
+  @IsNumber()
+  companyId: number;
   @IsNotEmpty()
   @IsString()
   image: string;
   @IsNotEmpty()
   @IsString()
-  projectClient: string;
+  project_client: string;
   @IsOptional()
   @IsNumber()
   index: number;
@@ -42,8 +43,8 @@ export class UpdateProjectImageDto {
 
 export class UpdateProjectDto {
   @IsNotEmpty()
-  @IsString()
-  clientId: string;
+  @IsNumber()
+  companyId: number;
   @IsNotEmpty()
   @IsString()
   readonly title?: string;
@@ -51,18 +52,18 @@ export class UpdateProjectDto {
   @IsString()
   readonly description?: string;
   @IsOptional()
-  @IsString()
-  readonly type?: string;
+  @IsNumber()
+  readonly type?: number;
   @IsOptional()
   @IsString()
   readonly project_date?: string;
   @IsOptional()
   @IsString()
-  readonly projectClient?: string;
+  readonly project_client?: string;
   @IsNotEmpty()
   @Type(() => ImageUrl || String || null)
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(4)
-  imageUrl: ImageUrl[] | string[] | null[];
+  images: ImageUrl[] | string[] | null[];
 }

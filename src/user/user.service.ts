@@ -94,7 +94,7 @@ export class UserService {
       }
       
       user.email = body.email;
-      user.userName = body.userName;
+      user.user_name = body.userName;
 
       if (body.password) {
         user.password =  await bcrypt.hash(body.password, 10)
@@ -119,7 +119,7 @@ export class UserService {
             id: true,
             company_name: true
           },
-          userName: true,
+          user_name: true,
           role: true,
           email: true
         }
@@ -130,16 +130,23 @@ export class UserService {
     }
   }
 
-  async getUserData(userId: string) {
+  async getUserData(userId: number) {
     try {
-      
-      return await this.userModel.findOne({ _id: userId }).select([
-        'email', 
-        '_id', 
-        'clientName', 
-        'userName', 
-        'role'
-      ]);
+      return await this.userRepo.findOne({ 
+        where: { id: userId },
+        select: {
+          company: {
+            id: true,
+            company_name: true
+          },
+          user_name: true,
+          role: true,
+          email: true
+        },
+        relations: {
+          company: true
+        }
+      })
     } catch (error) {
       throw new BadGatewayException(`Error in getUserData: ${error.message}`);
     }

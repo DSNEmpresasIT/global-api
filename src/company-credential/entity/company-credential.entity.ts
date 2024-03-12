@@ -22,7 +22,7 @@ export class CompanyKeys extends BaseEntity {
   @OneToOne(() => EmailKeys, { cascade: true })
   @JoinColumn()
   email_keys: EmailKeys;
-  @OneToOne(() => CloudinaryKeys, { cascade: true })
+  @OneToOne(() => CloudinaryKeys, { cascade: true, nullable: true })
   @JoinColumn()
   cloudinary_keys: CloudinaryKeys;
 }

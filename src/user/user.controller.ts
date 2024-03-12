@@ -12,15 +12,15 @@ export class UserController {
     private readonly service: UserService
   ) {}
   
-  // @Roles(RolesTypes.ADMIN)
-  // @UseGuards(JwtGuard, RoleGuard)
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Get('all')
   async getAllUsers() {
     return await this.service.getAllUsers();
   }
 
-  // @Roles(RolesTypes.ADMIN)
-  // @UseGuards(JwtGuard, RoleGuard)
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Put(':userId')
   async updateUser(@Param() param, @Body() body: UpdateUserDto) {
     return await this.service.updateUser(param.userId, body);

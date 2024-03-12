@@ -11,20 +11,32 @@ export class ProjectsController {
   constructor(private readonly service: ProjectsService) {}
   
   @UseGuards(JwtGuard)
-  @Post('create/:clientId')
+  @Post('create/:companyId')
   async createProject(@Body() body: CreateProjectDto, @Param() param) {
-    return this.service.createProject(param.clientId, body)
+    return this.service.createProject(param.companyId, body)
   }
  
-  @Get('client/:clientId')
-  async getClientProjects(@Param() params) {
-    const clientId = params.clientId;
-    return await this.service.getAllClientProjects(clientId);
+  @Get('client/:companyId')
+  async getAllCompanyProjects(@Param() params) {
+    const companyId = params.companyId;
+    return await this.service.getAllCompanyProjects(companyId);
   }
 
   @Get(':projectId')
-  async getProjectData(@Param('projectId') projectId) {
-    return await this.service.getProjectData(projectId);
+  async getProjectDataById(@Param('projectId') projectId) {
+    return await this.service.getProjectDataById(projectId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put(':projectId/desactivate')
+  async desactivateProject(@Param() param) {
+    return await this.service.desactivateProject(param.projectId)
+  }
+  
+  @UseGuards(JwtGuard, RoleGuard)
+  @Put(':projectId/activate')
+  async activateProject(@Param() param) {
+    return await this.service.activateProject(param.projectId)
   }
 
   @UseGuards(JwtGuard, RoleGuard)
@@ -33,18 +45,9 @@ export class ProjectsController {
     return await this.service.updateProject(param.projectId, body);
   }
 
-  @UseGuards(JwtGuard)
-  @Put(':projectId/image')
-  async updateProjectImage(@Param() param, @Body() body: UpdateProjectImageDto) {
-    return await this.service.updateProjectImage(param.projectId, body)
-  }
-
-  @Roles(RolesTypes.CUSTOMER, RolesTypes.PREMIUM, RolesTypes.ADMIN)
-  @UseGuards(JwtGuard, RoleGuard)
-  @Delete(':projectId')
-  async deleteProject() {
-    return {
-      ok: true
-    }
-  }
+  // @UseGuards(JwtGuard)
+  // @Put(':projectId/image')
+  // async updateProjectImage(@Param() param, @Body() body: UpdateProjectImageDto) {
+  //   return await this.service.updateProjectImage(param.projectId, body)
+  // }
 }

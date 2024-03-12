@@ -10,7 +10,7 @@ export class CompanyController {
 
   @Post('register')
   async createCompany(@Body() body: CreateCompanyDto) {
-    return await this.companyService.create(body);
+    return await this.companyService.createCompany(body);
   }
 
   @Get('all')
