@@ -41,10 +41,10 @@ export class MailerService {
     };
   }
 
-  async sendEmail(clientId: string, body: SendEmailDto) {
+  async sendEmail(companyId: string, body: SendEmailDto) {
     try {
       const companyKeys = await this.CompanyCredentialModule.findOne({
-        where: { clientId },
+        where: { companyId },
         relations: ['email_keys'],
       });
 
