@@ -51,7 +51,7 @@ class EmailDto {
   email: string;
 }
 
-class CloudinaryDto {
+export class CloudinaryDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)

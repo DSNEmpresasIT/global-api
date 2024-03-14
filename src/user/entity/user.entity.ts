@@ -7,7 +7,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: 'varchar'  })
-  userName: string;
+  user_name: string;
   @Column({ type: 'varchar', unique: true })
   email: string;
   @Column({ type: 'varchar' })

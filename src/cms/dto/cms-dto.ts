@@ -5,10 +5,5 @@ import { Type } from "class-transformer";
 export class CreateClientContentDto {
   @IsNotEmpty()
   @IsString()
-  clientId: string;
-  @ValidateNested()
-  @IsOptional()
-  @IsArray()
-  @Type(() => ProjectType)
-  project_type: ProjectType[];
+  name: string;
 }

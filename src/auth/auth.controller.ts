@@ -28,8 +28,8 @@ export class AuthController {
       private readonly credentialModel: Model<CompanyCredential>
   ) {}
 
-  // @Roles(RolesTypes.ADMIN)
-  // @UseGuards(JwtGuard, RoleGuard)
+  @Roles(RolesTypes.ADMIN)
+  @UseGuards(JwtGuard, RoleGuard)
   @Post('register/:company_id')
   async register(@Param() param,@Body() registerDto: RegisterDto) {
     const user = await this.userService.create(param.company_id, registerDto);
@@ -38,7 +38,7 @@ export class AuthController {
       company: user.company,
       role: user.role,
       email: user.email,
-      userName: user.userName
+      userName: user.user_name
     };
 
     const token = await this.authService.signPayload(payload);
@@ -53,7 +53,7 @@ export class AuthController {
       id: user.id,
       role: user.role,
       email: user.email,
-      userName: user.userName
+      userName: user.user_name
     };
     const token = await this.authService.signPayload(payload);
     return { user: { ...user}, token};

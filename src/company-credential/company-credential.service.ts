@@ -1,8 +1,5 @@
 import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { CreateCompanyCredentialDto, UpdateCompanyCredentialDto } from './dto/company-credentials-dto';
-import { CompanyCredential } from './schemas/ClientCredential.schema';
 
 import { CompanyKeys } from './entity/company-credential.entity';
 import { GetCompanyKeysQuery } from './models/CompanyCredential.interface';
@@ -23,7 +20,7 @@ export class CompanyCredentialService {
     }
   }
 
-  async getCompanyCredential(companyId: number, relations: GetCompanyKeysQuery): Promise<CompanyKeys> {
+  async getCompanyCredential(companyId: number, relations: GetCompanyKeysQuery = {}): Promise<CompanyKeys> {
     try {
       return await CompanyKeys.findOne({ 
         where: { id: companyId },
@@ -97,18 +94,25 @@ export class CompanyCredentialService {
 
   async createCompanyKeysEntity(createCompanyCredentialDto: CreateCompanyCredentialDto) {
     try {
-      const companyKeys = await CompanyKeys.create({
-        ...createCompanyCredentialDto
-      });
+      const cloudinaryData = {
+        api_key: createCompanyCredentialDto?.cloudinary?.api_key ?? process.env.CLOUDINARY_API_KEY,
+        cloud_name: createCompanyCredentialDto?.cloudinary?.cloud_name ?? process.env.CLOUDINARY_CLOUD_NAME,
+        api_secret: createCompanyCredentialDto?.cloudinary?.api_secret ?? process.env.CLOUDINARY_API_SECRET
+      }
+      
 
       const emailKeys = await EmailKeys.create().save()
-      const cloudinaryKeys = await CloudinaryKeys.create().save()
+      const cloudinaryKeys = await CloudinaryKeys.create({ ...cloudinaryData }).save()
       const recaptchaKeys = await ReCaptchaKey.create().save()
-      
-      companyKeys.email_keys = emailKeys;
-      companyKeys.cloudinary_keys = cloudinaryKeys;
-      companyKeys.recaptcha_keys = recaptchaKeys
 
+
+      const companyKeys = await CompanyKeys.create({
+        ...createCompanyCredentialDto,
+        email_keys: emailKeys,
+        cloudinary_keys: cloudinaryKeys,
+        recaptcha_keys: recaptchaKeys,
+      });
+      
       await CompanyKeys.save(companyKeys);
 
       return companyKeys;
