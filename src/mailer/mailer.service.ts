@@ -1,16 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConnectionDto, MailDto, sendEmail } from 'src/libs/mailer-client';
 import { SendEmailDto } from './dto/mailer.dto';
-import { CompanyCredential } from 'src/company-credential/models/CompanyCredential.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CompanyKeys } from 'src/company-credential/entity/company-credential.entity';
 
 @Injectable()
 export class MailerService {
   constructor(
-    @InjectModel(CompanyCredential.name)
-    private CompanyCredentialModule: Model<CompanyCredential>
-  ){}
+    @InjectModel(CompanyKeys.name)
+    private CompanyCredentialModule: Model<CompanyKeys>,
+  ) {}
   async sendEmailToJauregui(body: SendEmailDto) {
     const connection: ConnectionDto = {
       host: process.env.HOST_JAUREGUI,
@@ -41,37 +41,50 @@ export class MailerService {
     };
   }
 
-  async sendEmail(clientId: string, body: SendEmailDto) {
-    const clientCredentail = await this.CompanyCredentialModule.findOne({ clientId }).select('email')
-    if (!clientCredentail?.email) return new BadRequestException('Client credential not found') 
-    const clientEmail = clientCredentail.email;
-    
-    const connection: ConnectionDto = {
-      host: clientEmail.host,
-      port: +clientEmail.port,
-      user: clientEmail.user,
-      pass: clientEmail.password,
-    };
+  async sendEmail(companyId: string, body: SendEmailDto) {
+    try {
+      const companyKeys = await this.CompanyCredentialModule.findOne({
+        where: { companyId },
+        relations: ['email_keys'],
+      });
 
-    const mail: MailDto = {
-      from: body.from,
-      to: clientEmail.email,
-      subject: body.subject,
-      html: `
-        <div>
-          <b>Cliente: ${body.fullName}</b>
-          <br/>
-          <br/>
-          <b>Mensaje: </b> <br/>
-          <p>${body.message}</p>
-        </div>
-      `,
-    };
+      if (!companyKeys || !companyKeys.email_keys) {
+        throw new BadRequestException(
+          'Client credentials not found or email keys not set',
+        );
+      }
 
-    await sendEmail(connection, mail);
-    return {
-      message: 'Mail enviado exitósamente',
-      date: new Date().toDateString(),
-    };
+      const emailKeys = companyKeys.email_keys;
+
+      const connection: ConnectionDto = {
+        host: emailKeys.host,
+        port: emailKeys.port,
+        user: emailKeys.user,
+        pass: emailKeys.password,
+      };
+
+      const mail: MailDto = {
+        from: body.from,
+        to: emailKeys.email,
+        subject: body.subject,
+        html: `
+          <div>
+            <b>Cliente: ${body.fullName}</b>
+            <br/>
+            <br/>
+            <b>Mensaje: </b> <br/>
+            <p>${body.message}</p>
+          </div>
+        `,
+      };
+
+      await sendEmail(connection, mail);
+      return {
+        message: 'Mail sent successfully',
+        date: new Date().toDateString(),
+      };
+    } catch (error) {
+      throw new BadRequestException('Error sending email: ', error.message);
+    }
   }
 }
