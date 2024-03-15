@@ -10,13 +10,13 @@ export class MicrositePage extends BaseEntity {
   @Column({type: "varchar", unique: true})
   company: string
 
-  @OneToOne(()=> BannerComponent)
+  @OneToOne(()=> BannerComponent, { nullable: true})
   @JoinColumn()
-  bannerComponent: BannerComponent;
+  banner: BannerComponent;
 
-  @OneToOne(()=> AboutComponent)
+  @OneToOne(()=> AboutComponent, { nullable: true})
   @JoinColumn()
-  aboutComponent: AboutComponent;
+  about: AboutComponent;
 
 
 }

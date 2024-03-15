@@ -12,8 +12,8 @@ export class BannerComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'boolean' })
-  active: boolean;
+  @Column({ type: 'boolean', default: true })
+  is_active: boolean;
 
   @Column({ type: 'varchar' })
   title: string;
@@ -24,6 +24,6 @@ export class BannerComponent extends BaseEntity {
   @Column({ type: 'text' })
   video_link: string;
 
-  @OneToMany(() => Image, (image) => image.BannerComponent)
+  @OneToMany(() => Image, (image) => image.banner_component, { nullable: true})
   images: Image[];
 }

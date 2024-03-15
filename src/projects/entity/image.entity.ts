@@ -9,12 +9,12 @@ export class Image extends BaseEntity {
   id: number;
 
   @Column({ type: 'boolean', default: 'true' })
-  active: boolean;
+  is_active: boolean;
 
-  @Column({ type: 'varchar', default: null })
+  @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   description: string;
 
   @Column({ type: 'varchar' })
@@ -28,5 +28,5 @@ export class Image extends BaseEntity {
   project: Project;
 
   @ManyToOne(() => BannerComponent, (banner) => banner.images)
-  BannerComponent: BannerComponent
+  banner_component: BannerComponent
 }

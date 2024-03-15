@@ -13,11 +13,11 @@ export class AboutComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   is_active: boolean;
 
   @Column({ type: 'varchar' })
-  bandage: string;
+  badge: string;
 
   @Column({ type: 'varchar' })
   title: string;
@@ -25,11 +25,11 @@ export class AboutComponent extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { nullable: true})
   @JoinColumn()
   image_1: Image;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { nullable: true})
   @JoinColumn()
   image_2: Image;
 }
