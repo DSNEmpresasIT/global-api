@@ -19,6 +19,7 @@ import { SitemapModule } from './sitemap/sitemap.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompanyModule } from './company/company.module';
 import { dataSourceOptions } from 'db/data-source';
+import { MicrositeModule } from './microsite/microsite.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { dataSourceOptions } from 'db/data-source';
     MailerModule,
     SitemapModule,
     CompanyModule,
+    MicrositeModule,
   ],
   controllers: [AppController, SocialmediaController, SitemapController],
   providers: [AppService, SocialmediaService, JwtStrategy, SitemapService],
