@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('AboutComponent')
+@Entity('about_component')
 export class AboutComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

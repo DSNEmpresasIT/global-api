@@ -1,6 +1,8 @@
 import { BaseEntity, Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Project } from "./project.entity";
 import { BannerComponent } from "src/microsite/entities/banner-component.entity";
+import { CompanyInfoComponent } from "src/microsite/entities/company-info-component.entity";
+import { CarouselComponent } from "src/microsite/entities/carousel-component.entity";
 
 @Entity('image')
 export class Image extends BaseEntity {
@@ -28,5 +30,14 @@ export class Image extends BaseEntity {
   project: Project;
 
   @ManyToOne(() => BannerComponent, (banner) => banner.images)
-  banner_component: BannerComponent
+  @JoinTable()
+  banner_component: BannerComponent;
+
+  @ManyToOne(() => CompanyInfoComponent, companyInfo => companyInfo.cards, { nullable: true })
+  @JoinTable()
+  company_info_component: CompanyInfoComponent;
+
+  @ManyToOne(() => CarouselComponent, carousel => carousel.images)
+  @JoinTable()
+  carousel_component: CarouselComponent;
 }

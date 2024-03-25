@@ -1,15 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConnectionDto, MailDto, sendEmail } from 'src/libs/mailer-client';
 import { SendEmailDto } from './dto/mailer.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CompanyKeys } from 'src/company-credential/entity/company-credential.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CompanyCredentialService } from 'src/company-credential/company-credential.service';
 
 @Injectable()
 export class MailerService {
   constructor(
-    @InjectModel(CompanyKeys.name)
-    private CompanyCredentialModule: Model<CompanyKeys>,
+    private CompanyKeysService: CompanyCredentialService,
   ) {}
   async sendEmailToJauregui(body: SendEmailDto) {
     const connection: ConnectionDto = {
@@ -41,12 +41,9 @@ export class MailerService {
     };
   }
 
-  async sendEmail(companyId: string, body: SendEmailDto) {
+  async sendEmail(companyId: number, body: SendEmailDto) {
     try {
-      const companyKeys = await this.CompanyCredentialModule.findOne({
-        where: { companyId },
-        relations: ['email_keys'],
-      });
+      const companyKeys = await this.CompanyKeysService.getCompanyCredential(companyId, { emailKeys: true });
 
       if (!companyKeys || !companyKeys.email_keys) {
         throw new BadRequestException(

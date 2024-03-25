@@ -1,8 +1,10 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BannerComponent } from "./banner-component.entity";
 import { AboutComponent } from "./about-component.entity";
+import { CompanyInfoComponent } from "./company-info-component.entity";
+import { CarouselComponent } from "./carousel-component.entity";
 
-@Entity('MicrositePage')
+@Entity('microsite_page')
 export class MicrositePage extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
@@ -18,5 +20,9 @@ export class MicrositePage extends BaseEntity {
   @JoinColumn()
   about: AboutComponent;
 
+  @OneToOne(() => CompanyInfoComponent, { nullable: true })
+  company_info: CompanyInfoComponent;
 
+  @OneToOne(() => CarouselComponent, { nullable: true })
+  carousel: CarouselComponent;
 }

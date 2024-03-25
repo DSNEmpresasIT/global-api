@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Image } from 'src/projects/entity/image.entity';
 
-@Entity('BannerComponent')
+@Entity('banner_component')
 export class BannerComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
