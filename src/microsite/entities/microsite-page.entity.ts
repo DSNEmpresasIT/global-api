@@ -7,22 +7,19 @@ import { CarouselComponent } from "./carousel-component.entity";
 @Entity('microsite_page')
 export class MicrositePage extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number
-
+  id: number;
+  @Column({ type: 'number', default: 1 })
+  type: number;
   @Column({type: "varchar", unique: true})
   company: string
-
   @OneToOne(()=> BannerComponent, { nullable: true})
   @JoinColumn()
   banner: BannerComponent;
-
   @OneToOne(()=> AboutComponent, { nullable: true})
   @JoinColumn()
   about: AboutComponent;
-
   @OneToOne(() => CompanyInfoComponent, { nullable: true })
   company_info: CompanyInfoComponent;
-
   @OneToOne(() => CarouselComponent, { nullable: true })
   carousel: CarouselComponent;
 }

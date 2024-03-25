@@ -4,6 +4,8 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class ContactComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column({ type: 'number', default: 1 })
+  type: number;
   @Column({ type: "boolean", default: true })
   is_active: boolean;
   @Column({ type: "varchar" })

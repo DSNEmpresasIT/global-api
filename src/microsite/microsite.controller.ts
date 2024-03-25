@@ -7,28 +7,28 @@ import { CreateMicrositeDto } from './dto/create-microsite.dto';
 export class MicrositeController {
   constructor(private readonly micrositeService: MicrositeService) {}
 
-  @Post()
-  create(@Body() createMicrositeDto: CreateMicrositeDto) {
-    return this.micrositeService.create(createMicrositeDto);
+  @Post('create/:companyId')
+  async create(@Param('companyId') companyId, @Body() createMicrositeDto: CreateMicrositeDto) {
+    return await this.micrositeService.create(companyId, createMicrositeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.micrositeService.findAll();
+  @Get('all')
+  async getAllMicrosites() {
+    return await this.micrositeService.getAllMicrosites();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.micrositeService.findOne(+id);
+  @Get(':micrositeId')
+  async getMicrositeById() {
+    
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMicrositeDto) {
-    return this.micrositeService.update(+id, updateMicrositeDto);
+  @Get('company/:companyId')
+  async getMicrositeByCompanyId(@Param('id') id: number) {
+    return this.micrositeService.findOne(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.micrositeService.remove(+id);
+  @Patch(':micrositeId')
+  async updateMicrosite(@Param('id') id: number, @Body() updateMicrositeDto) {
+    return this.micrositeService.update(id, updateMicrositeDto);
   }
 }
