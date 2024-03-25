@@ -18,8 +18,8 @@ import { SitemapService } from './sitemap/sitemap.service';
 import { SitemapModule } from './sitemap/sitemap.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompanyModule } from './company/company.module';
-import { dataSourceOptions } from 'db/data-source';
 import { MicrositeModule } from './microsite/microsite.module';
+import { dataSourceOptions } from './db/config';
 
 @Module({
   imports: [

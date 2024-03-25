@@ -2,7 +2,7 @@ import { Image } from "src/projects/entity/image.entity";
 import { BaseEntity, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
-@Entity('carousel-component')
+@Entity('carousel_component')
 export class CarouselComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
