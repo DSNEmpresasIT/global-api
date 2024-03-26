@@ -3,7 +3,7 @@ import { MicrositeService } from './microsite.service';
 import { CreateMicrositeDto } from './dto/create-microsite.dto';
 
 
-@Controller('microsite')
+@Controller('api/microsite')
 export class MicrositeController {
   constructor(private readonly micrositeService: MicrositeService) {}
 

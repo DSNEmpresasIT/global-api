@@ -4,7 +4,7 @@ import { CreateMicrositeDto } from './dto/create-microsite.dto';
 @Injectable()
 export class MicrositeService {
   async create(companyId: number, createMicrositeDto: CreateMicrositeDto) {
-    return 'This action adds a new microsite';
+    return createMicrositeDto;
   }
 
   async getAllMicrosites() {
