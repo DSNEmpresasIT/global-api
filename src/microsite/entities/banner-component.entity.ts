@@ -13,7 +13,7 @@ export class BannerComponent extends BaseEntity {
   id: number;
   @Column({ type: 'boolean', default: true })
   is_active: boolean;
-  @Column({ type: 'number', default: 1 })
+  @Column({ type: 'integer', default: 1 })
   type: number;
   @Column({ type: 'varchar' })
   title: string;

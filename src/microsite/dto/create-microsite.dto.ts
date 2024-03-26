@@ -1,29 +1,6 @@
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 
-export class CreateMicrositeDto {
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => AboutTypeDto)
-  about: AboutTypeDto;
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => BannerTypeDto)
-  banner: BannerTypeDto;
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => ContactTypeDto)
-  contact_component: ContactTypeDto;
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CarouselTypeDto)
-  carousel: CarouselTypeDto;
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CompanyInfoTypeDto)
-  company_info: CompanyInfoTypeDto;
-}
-
 export class AboutTypeDto {
   @IsNotEmpty()
   @IsNumber()
@@ -84,4 +61,27 @@ export class CompanyInfoTypeDto {
   @IsString()
   description: string;
   cards: string[];
+}
+
+export class CreateMicrositeDto {
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AboutTypeDto)
+  about: AboutTypeDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => BannerTypeDto)
+  banner: BannerTypeDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ContactTypeDto)
+  contact_component: ContactTypeDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CarouselTypeDto)
+  carousel: CarouselTypeDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CompanyInfoTypeDto)
+  company_info: CompanyInfoTypeDto;
 }

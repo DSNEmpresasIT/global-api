@@ -6,7 +6,7 @@ import { BaseEntity, Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColum
 export class CompanyInfoComponent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'number', default: 1 })
+  @Column({ type: 'integer', default: 1 })
   type: number;
   @Column({ type: 'boolean', default: true })
   is_active: boolean;

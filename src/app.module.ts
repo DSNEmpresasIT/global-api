@@ -19,7 +19,7 @@ import { SitemapModule } from './sitemap/sitemap.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompanyModule } from './company/company.module';
 import { MicrositeModule } from './microsite/microsite.module';
-import { dataSourceOptions } from './db/config';
+import { dataSourceOptions } from '../db/data-source';
 
 @Module({
   imports: [

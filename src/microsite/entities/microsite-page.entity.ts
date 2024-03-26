@@ -8,7 +8,7 @@ import { CarouselComponent } from "./carousel-component.entity";
 export class MicrositePage extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'number', default: 1 })
+  @Column({ type: 'integer', default: 1 })
   type: number;
   @Column({type: "varchar", unique: true})
   company: string
